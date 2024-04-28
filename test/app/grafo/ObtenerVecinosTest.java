@@ -3,9 +3,11 @@ package app.grafo;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
+import app.Arista;
 import app.Grafo;
 
 public class ObtenerVecinosTest {
@@ -16,7 +18,7 @@ public class ObtenerVecinosTest {
 		int verticeOrigen = 0;
 		int verticeDestino = 1;
 		int verticeNoExiste = 2;
-		double peso = 200;
+		int peso = 200;
 		Grafo g = new Grafo(cantVertices);
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
 	
@@ -28,13 +30,15 @@ public class ObtenerVecinosTest {
 		int cantVertices = 2;
 		int verticeOrigen = 0;
 		int verticeDestino = 1;
-		double peso = 200;
+		int peso = 200;
 		Grafo g = new Grafo(cantVertices);
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
-		ArrayList<Integer> vecinosEsperados = new ArrayList<>();
-		vecinosEsperados.add(verticeDestino);		
+		List<Integer> vecinosEsperados = new ArrayList<>();
+		vecinosEsperados.add(1);		
 		
-		assertEquals(g.obtenerVecinos(verticeOrigen), vecinosEsperados);
+		List<Integer> vecinosObtenidos = g.obtenerVecinos(verticeOrigen);
+		
+		assertEquals(vecinosObtenidos, vecinosEsperados);
 	}
 	
 }
