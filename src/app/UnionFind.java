@@ -22,32 +22,35 @@ public class UnionFind {
 		}
 	}
 	
-	public int find(int i) {
+	public int raiz(int i) {
 		verificarVertice(i);
 		
 		if (parents[i] != i) {
-			parents[i] = find(parents[i]);
+			parents[i] = raiz(parents[i]);
 			return parents[i];
 		}
 		
 		return i;
 	}
 	
+	//false si no pertenecen al mismo componente conexa
+	public boolean find(int i, int j) {
+		verificarVertice(i);
+		verificarVertice(j);
+		
+		return raiz(i) == raiz(j);
+	}
+	
+	//(si no estan en el mismo componente conexa)
+	//ahora ambos tienen el mismo padre, es decir, los unio y ahora estan en el mismo componente conexa
 	public void union(int i, int j) {
 		verificarVertice(i);
 		verificarVertice(j);
 		
-		int ri = find(i);
-		int rj = find(j);
+		int ri = raiz(i);
+		int rj = raiz(j);
 		
 		parents[ri] = rj;
-	}
-	
-	public boolean isConnected(int i, int j) {
-		verificarVertice(i);
-		verificarVertice(j);
-		
-		return find(i) == find(j);
 	}
 	
 	public int[] getParents() {

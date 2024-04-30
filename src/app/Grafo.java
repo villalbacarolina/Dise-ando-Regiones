@@ -73,11 +73,19 @@ public class Grafo {
 		return this._vecinos.size();
 	}
 
+	
+	// VERIFICACIONES
+	
 	private void assertVerticeValido(int vertice) {
 		if (_vecinos.get(vertice) == null) {
 			throw new IllegalArgumentException("El vértice no existe: " + vertice);
 		}
 	}
+	
+    public void validarQueNoEsteVacio(){
+        if(obtenerAristas().size() == 0)
+            throw new IllegalArgumentException("El grafo no tiene ningún componente conexa.");
+    }
 
 	
 	// PARA DEBUGGEAR
