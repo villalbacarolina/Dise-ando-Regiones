@@ -21,8 +21,8 @@ public class Kruskal {
             int origen = arista.getOrigen();
             int destino = arista.getDestino();
 
-            //si vertice a no forma circuito con vertice b
-            //(en otras palabras, tiene el mismo padre/esta en el mismo componente conexa) 
+            //si vertice a no esta en el mismo componente conexa que b
+            //(en otras palabras, tiene el mismo padre/no forma circuito con b) 
             if (!unionFind.find(origen, destino)) {
             	//guardamos arista entre a y b
                 arbolMinimo.agregarArista(origen, destino, arista.getPeso()); 
@@ -30,12 +30,11 @@ public class Kruskal {
                 //por lo q unionFind anota q tienen el mismo padre
                 //y podra' decir si ellos u otros vertices q los usen pertenecen al mismo componente conexa
                 unionFind.union(origen, destino); 
-                //si recorrimos cada vertice, ya podemos salir del for
+                
                 if (arbolMinimo.obtenerAristas().size() == grafo.tamanio() - 1)
                     break;
             }
         }
-
         return arbolMinimo;
     }
 	

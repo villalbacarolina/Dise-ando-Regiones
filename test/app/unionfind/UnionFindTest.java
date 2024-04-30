@@ -21,22 +21,22 @@ public class UnionFindTest {
 	}
 	
 	@Test
-	public void findTest() {
+	public void raizTest() {
 		int[] vertices = {0, 2, 3, 3, 4, 3, 6, 7, 7, 7};
 		UnionFind uf = new UnionFind(vertices);
-		assertEquals(3, uf.find(1));
+		assertEquals(3, uf.raiz(1));
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void findVerticeNegativoTest() {
+	public void raizVerticeNegativoTest() {
 		UnionFind uf = new UnionFind(5);
-		uf.find(-1);
+		uf.raiz(-1);
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
-	public void findVerticeExcedidoTest() {
+	public void raizVerticeExcedidoTest() {
 		UnionFind uf = new UnionFind(5);
-		uf.find(5);
+		uf.raiz(5);
 	}
 	
 	@Test
@@ -76,13 +76,13 @@ public class UnionFindTest {
 	public void connectedTest() {
 		int[] vertices = {0, 2, 3, 3, 4, 3, 6, 7, 7, 7};
 		UnionFind uf = new UnionFind(vertices);
-		assertTrue(uf.isConnected(2, 5));
+		assertTrue(uf.find(2, 5));
 	}
 	
 	@Test
 	public void notConnectedTest() {
 		int[] vertices = {0, 2, 3, 3, 4, 3, 6, 7, 7, 7};
 		UnionFind uf = new UnionFind(vertices);
-		assertFalse(uf.isConnected(8, 5));
+		assertFalse(uf.find(8, 5));
 	}
 }

@@ -33,16 +33,13 @@ public class UnionFind {
 		return i;
 	}
 	
-	//false si no pertenecen al mismo componente conexa
 	public boolean find(int i, int j) {
 		verificarVertice(i);
 		verificarVertice(j);
 		
 		return raiz(i) == raiz(j);
 	}
-	
-	//(si no estan en el mismo componente conexa)
-	//ahora ambos tienen el mismo padre, es decir, los unio y ahora estan en el mismo componente conexa
+
 	public void union(int i, int j) {
 		verificarVertice(i);
 		verificarVertice(j);
