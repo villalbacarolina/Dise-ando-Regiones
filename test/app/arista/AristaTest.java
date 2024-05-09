@@ -98,4 +98,17 @@ public class AristaTest {
 		assertTrue(a.esMismaConexion(b));
 	}
 	
+	@Test
+	public void actualizarPeso() {
+		int origen = 1;
+		int destino = 2;
+		int peso = 100;
+		Arista a = new Arista(origen,destino,peso);
+		int nuevoPeso = 200;
+		
+		a.setPeso(nuevoPeso);
+		
+		assertEquals(a.getPeso(), nuevoPeso);
+	}
+	
 }

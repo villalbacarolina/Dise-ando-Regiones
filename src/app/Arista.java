@@ -35,6 +35,11 @@ public class Arista {
 		return "" + _destino + "-" + _origen;
 	}
 	
+	public void setPeso(int peso) {
+		assertPesoValido(peso);
+		_peso = peso;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
