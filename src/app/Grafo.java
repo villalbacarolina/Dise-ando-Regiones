@@ -31,13 +31,14 @@ public class Grafo {
 		_vecinos.get(destino).add(origen);
 		
 		Arista a = new Arista(origen, destino, peso);
-		Arista b = new Arista(destino, origen, peso);
+//		Arista b = new Arista(destino, origen, peso);
 		
 		String claveDeAristaA = a.getClaveOrigenDestino();
-		String claveDeAristaB = b.getClaveOrigenDestino();
+		String claveDeAristaB = a.getClaveDestinoOrigen();
 		
 		_aristas.put(claveDeAristaA, a);
-		_aristas.put(claveDeAristaB, b);
+		_aristas.put(claveDeAristaB, a);
+//		_aristas.put(claveDeAristaB, b);
 				
 	}
 
