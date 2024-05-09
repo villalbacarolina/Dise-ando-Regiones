@@ -13,7 +13,7 @@ public class AristaTest {
 		int origen = 1;
 		int destino = 1;
 		int peso = 200;
-		new Arista(origen,destino,peso);
+		new Arista(origen, destino, peso);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -30,6 +30,7 @@ public class AristaTest {
 		int destino = 1;
 		int peso = 100;
 		new Arista(origen,destino,peso);
+
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -47,7 +48,6 @@ public class AristaTest {
 		int peso = 100;
 		Arista a = new Arista(origen,destino,peso);
 		Arista b = new Arista(origen,destino,peso);
-		
 		assertTrue(a.equals(b));
 	}
 
