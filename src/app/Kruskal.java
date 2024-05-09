@@ -5,14 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class Kruskal {
-
-	public Kruskal() {}
 	
-	public Grafo crearArbolGeneradorMinimo(Grafo grafo) {
+	public static Grafo generar(Grafo grafo) {
 		grafo.validarQueNoEsteVacio();
 		
         List<Arista> aristasGrafo = grafo.obtenerAristas();
-        List<Arista> aristasGrafoPesoAscendente = ordenarAristasSegunPesoAscendente(aristasGrafo);
+        List<Arista> aristasGrafoPesoAscendente = Kruskal.ordenarAristas(aristasGrafo);
         
         Grafo arbolMinimo = new Grafo(grafo.tamanio());
         UnionFind unionFind = new UnionFind(grafo.tamanio());
@@ -38,7 +36,7 @@ public class Kruskal {
         return arbolMinimo;
     }
 	
-    private ArrayList<Arista> ordenarAristasSegunPesoAscendente(List<Arista> aristasAOrdenar){
+    public static ArrayList<Arista> ordenarAristas(List<Arista> aristasAOrdenar){
         ArrayList<Arista> aristasOrdenadas = new ArrayList<>(aristasAOrdenar);
         Collections.sort(aristasOrdenadas, (a1, a2) -> Integer.compare(a1.getPeso(), a2.getPeso()));
         return aristasOrdenadas;

@@ -25,9 +25,13 @@ public class UnionFind {
 	public int raiz(int i) {
 		verificarVertice(i);
 		
-		if (parents[i] != i) {
-			parents[i] = raiz(parents[i]);
-			return parents[i];
+//		if (parents[i] != i) {
+//			parents[i] = raiz(parents[i]);
+//			return parents[i];
+//		}
+		
+		while(parents[i] != i) {
+			i = parents[i];
 		}
 		
 		return i;

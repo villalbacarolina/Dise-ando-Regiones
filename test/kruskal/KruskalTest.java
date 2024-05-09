@@ -59,7 +59,7 @@ public class KruskalTest {
 		AGM_OpcionB.agregarArista(3, 4, 6); //C3-D4
 		AGM_OpcionB.agregarArista(4, 5, 9); //D4-E5
 		
-		Grafo arbolGeneradorMinimo = kruskal.crearArbolGeneradorMinimo(grafo);
+		Grafo arbolGeneradorMinimo = Kruskal.generar(grafo);
 		
 
 		if ( arbolGeneradorMinimo.obtenerAristas().equals(AGM_OpcionA.obtenerAristas()) )

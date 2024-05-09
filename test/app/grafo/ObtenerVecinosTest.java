@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import app.Arista;
 import app.Grafo;
 
 public class ObtenerVecinosTest {
