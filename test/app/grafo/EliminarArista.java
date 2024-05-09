@@ -28,7 +28,7 @@ public class EliminarArista {
 		vecinosEsperados.add(0);
 		
 		
-		g.eliminarArista(vertice2Origen, vertice2Destino);
+	g.eliminarArista(vertice2Origen, vertice2Destino);
 		
 		List<Integer> vecinosObtenidos = g.obtenerVecinos(vertice2Origen);
 		

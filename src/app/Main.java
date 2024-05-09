@@ -1,6 +1,6 @@
 package app;
 
-import java.util.List;
+import utils.Vertice;
 
 public class Main {
 
@@ -8,11 +8,11 @@ public class Main {
 		
 		DisenandoRegiones d = new DisenandoRegiones();
 		
-		d.agregarPeso(1, 2, 250);
-		d.agregarPeso(1, 3, 550);
-		d.agregarPeso(2, 1, 750);
+		d.agregarPeso(Vertice.BUENOS_AIRES, Vertice.CABA, 250);
+		d.agregarPeso(Vertice.JUJUY, Vertice.SALTA, 550);
+		d.agregarPeso(Vertice.SALTA, Vertice.FORMOSA, 750);
 		
-		d.obtenerVecinos(1);
+		d.obtenerVecinos(Vertice.SALTA);
 		
 //		// TODO Auto-generated method stub
 //		Grafo g = new Grafo(6);
