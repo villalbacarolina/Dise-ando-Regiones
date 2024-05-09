@@ -7,12 +7,18 @@ public class Main {
 	public static void main(String[] args) {
 		
 		DisenandoRegiones d = new DisenandoRegiones();
-		
+//		
 		d.agregarPeso(Vertice.BUENOS_AIRES, Vertice.CABA, 250);
 		d.agregarPeso(Vertice.JUJUY, Vertice.SALTA, 550);
-		d.agregarPeso(Vertice.SALTA, Vertice.FORMOSA, 750);
+		d.agregarPeso(Vertice.SALTA, Vertice.FORMOSA, 10);
+		d.agregarPeso(Vertice.SALTA, Vertice.SANTIAGO_DEL_ESTERO, 1000);
 		
-		d.obtenerVecinos(Vertice.SALTA);
+		d.generarRegionesTEST();
+//		
+//		d.obtenerVecinos(Vertice.SALTA);
+//		
+//		
+//		
 		
 //		// TODO Auto-generated method stub
 //		Grafo g = new Grafo(6);

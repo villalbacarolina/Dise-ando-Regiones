@@ -11,7 +11,9 @@ public class DisenandoRegiones {
 	private Grafo _grafoArgentina;
 
 	public DisenandoRegiones() {
+		
 		crearArgentina();
+
 	}
 
 	public void agregarPeso(Vertice origen, Vertice destino, int peso) {
@@ -26,6 +28,19 @@ public class DisenandoRegiones {
 		//por ahora lo usamos para pintar los vecinos..
 		//hay que retornar los valores de las aristas como un DTO o una tupla
 		for(Arista arista: lista_aristas) {
+			System.out.println(Vertice.getProvinciaPorNumero(arista.getOrigen()) + "-" + Vertice.getProvinciaPorNumero(arista.getDestino()) + "-" + arista.getPeso());
+		}
+	}
+	
+	//Es para ver si esta armando bien el AGM
+	public void generarRegionesTEST() {
+		Grafo agm = Kruskal.generar(_grafoArgentina);
+//		
+//		agm.mostrarAristas();
+//		
+		List<Arista> aristas = agm.obtenerAristas();
+		
+		for(Arista arista: aristas) {
 			System.out.println(Vertice.getProvinciaPorNumero(arista.getOrigen()) + "-" + Vertice.getProvinciaPorNumero(arista.getDestino()) + "-" + arista.getPeso());
 		}
 	}
