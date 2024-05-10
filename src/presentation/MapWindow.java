@@ -64,16 +64,16 @@ public class MapWindow {
 		return newFrame.isVisible();
 	}
 
-	public void setMarkersDot(List<MapMarkerDot> vertices) {
-		for (MapMarkerDot vertex : vertices) {
-            String name = vertex.getName();
+	public void setMarkersDot(List<Location> vertices) {
+		_vertices.clear();
+		
+		for (Location vertice : vertices) {
+            String name = vertice.placeName();
             if (!_vertices.containsKey(name)) {
-                _vertices.put(name, vertex);
+                _vertices.put(name, vertice.mark());
             }
         }
 		
-	
-		System.out.println(vertices);
 		updateMapMarkers();
 	}
 	
