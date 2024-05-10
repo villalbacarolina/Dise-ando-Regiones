@@ -32,6 +32,30 @@ public class DisenandoRegiones {
 		}
 	}
 	
+	/**El grafo debe ser arbol**/
+	public Grafo generarRegiones(int cantRegiones, Grafo grafo) {
+		//elimina las k-1 aristas de mayor peso
+		//k = cantRegiones
+		
+		verificarGrafoNull(grafo);
+		verificarCantRegiones(cantRegiones, grafo);
+		grafo.validarQueNoEsteVacio();
+		
+		for (int i = 0; i < cantRegiones-1; i++) {
+			Arista aristaMayor = grafo.obtenerAristas().get(0);
+			
+			for (Arista arista : grafo.obtenerAristas()) {
+				if (arista.getPeso() > aristaMayor.getPeso()) {
+					aristaMayor = arista;
+				}
+			}
+			
+			grafo.eliminarArista(aristaMayor.getOrigen(), aristaMayor.getDestino());
+		}
+		
+		return grafo;
+	}
+	
 	//Es para ver si esta armando bien el AGM
 	public void generarRegionesTEST() {
 		Grafo agm = Kruskal.generar(_grafoArgentina);
@@ -91,8 +115,22 @@ public class DisenandoRegiones {
 		_grafoArgentina.agregarArista(Vertice.CHACO.getValue(), Vertice.CORRIENTES.getValue(), 0);
 		_grafoArgentina.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.MISIONES.getValue(), 0);
 		_grafoArgentina.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.ENTRE_RIOS.getValue(), 0);
+	}
+	
+	private void verificarGrafoNull(Grafo grafo) {
+		if (grafo == null) {
+			throw new IllegalArgumentException("El grafo no puede ser null");
+		}
+	}
 
-
+	private void verificarCantRegiones(int cantRegiones, Grafo grafo) {
+		if (cantRegiones <= 0) {
+			throw new IllegalArgumentException("cantRegiones debe ser > 0");
+		}
+		
+		if (cantRegiones > grafo.tamanio()) {
+			throw new IllegalArgumentException("no se pueden crear mas regiones que vertices en el grafo");
+		}
 	}
 
 }
