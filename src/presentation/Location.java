@@ -6,6 +6,8 @@ import java.util.List;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 
+import utils.Vertice;
+
 public enum Location {
 	JUJUY(0,"Jujuy", -23.320, -65.363),
 	SALTA(1,"Salta", -25.166, -64.964),
@@ -76,5 +78,13 @@ public enum Location {
     	return new MapMarkerDot(coordinate);
     }
     
+    public static Location getLocation(int numero) {
+        for (Location provincia : Location.values()) {
+            if (provincia.id() == numero) {
+                return provincia;
+            }
+        }
+        return null;  
+    }
     
 }

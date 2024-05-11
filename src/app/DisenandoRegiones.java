@@ -1,7 +1,10 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import utils.AristaDTO;
 import utils.Vertice;
 
 public class DisenandoRegiones {
@@ -26,6 +29,15 @@ public class DisenandoRegiones {
 		return _grafo.obtenerVecinos(origen);
 	}
 
+	public List<AristaDTO> obtenerAristasDe(int origen) {
+		Set<Arista> aristas = _grafo.obtenerAristasDe(origen);
+		List<AristaDTO> aristasDTO = new ArrayList<>();
+		for(Arista arista : aristas) {
+			aristasDTO.add(new AristaDTO(arista.getOrigen(), arista.getDestino(), arista.getPeso()));
+		}
+		return aristasDTO;
+	}
+	
 	public void generarRegiones(int cantRegiones) {
 		_agm = Kruskal.generar(_grafo);
 
