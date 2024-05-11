@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +21,26 @@ import javax.swing.JPanel;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
 public class MapWindow {
 	private JFrame newFrame;
 	private JMapViewer _mapa;
-	private Map<String,MapMarkerDot> _vertices;
+	private Map<Integer, Location> _vertices;
 
 	public MapWindow() {
 		_vertices = new HashMap<>();
+
+		mainWindow();
+		closeButton();
+		positionWindowHalfScreen(newFrame);
+		initializeMap();
+
+		newFrame.setVisible(true);
+	}
+
+	private void mainWindow() {
 		newFrame = new JFrame("Nueva Ventana");
 		newFrame.setTitle("Map View");
 		newFrame.setResizable(false);
@@ -36,64 +49,44 @@ public class MapWindow {
 		newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		newFrame.getContentPane().add(new JLabel("¡Hola, soy una nueva ventana!"));
 		newFrame.setLayout(new BorderLayout());
+	}
 
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createLineBorder(Color.black, 5)); // Borde negro de 5px
-		panel.add(new JLabel("¡Hola, soy una ventana con borde!"));
-		newFrame.add(panel, BorderLayout.CENTER);
-
+	private void closeButton() {
 		JButton button = new JButton("Cerrar Ventana");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				newFrame.dispose();
-
 			}
 		});
 		newFrame.add(button, BorderLayout.SOUTH);
-
-		positionWindowHalfScreen(newFrame);
-		initializeMap();
-		newFrame.setVisible(true);
-		
-
-
 	}
 
-	public boolean isVisible() {
-		return newFrame.isVisible();
+	// Método para actualizar los marcadores en el mapa
+	private void printMarkers() {
+		_mapa.removeAllMapMarkers(); // Eliminar todos los marcadores existentes
+		for (Location location : _vertices.values()) {
+			MapMarkerDot marker = location.mark();
+			marker.getStyle().setBackColor(Color.red);
+			marker.getStyle().setColor(Color.red);
+			_mapa.addMapMarker(marker); // Añadir de nuevo todos los marcadores desde el mapa
+		}
 	}
 
-	public void setMarkersDot(List<Location> vertices) {
-		_vertices.clear();
-		
-		for (Location vertice : vertices) {
-            String name = vertice.placeName();
-            if (!_vertices.containsKey(name)) {
-                _vertices.put(name, vertice.mark());
-            }
-        }
-		
-		updateMapMarkers();
+	private void printConnections() {
+
+		for (int key : _vertices.keySet()) {
+			Location vertice = _vertices.get(key);
+			Coordinate start = vertice.getCoordinate();
+
+			for (int vecino : vertice.vecinos()) {
+				Coordinate end = _vertices.get(vecino).getCoordinate();
+				MapPolygon line = new MapPolygonImpl(Arrays.asList(start, end, start));
+				_mapa.addMapPolygon(line);
+			}
+		}
+
 	}
-	
-	private void initializeMap() {
-		_mapa = new JMapViewer();
-		_mapa.setZoomControlsVisible(false);
-		Coordinate coordinate = new Coordinate(-40, -66);
-		_mapa.setDisplayPosition(coordinate, 4);
-		newFrame.getContentPane().add(_mapa);
-	}
-	
-	  // Método para actualizar los marcadores en el mapa
-    private void updateMapMarkers() {
-        _mapa.removeAllMapMarkers(); // Eliminar todos los marcadores existentes
-        for (MapMarkerDot marker : _vertices.values()) {
-        	marker.getStyle().setBackColor(Color.red);
-        	marker.getStyle().setColor(Color.red);
-            _mapa.addMapMarker(marker); // Añadir de nuevo todos los marcadores desde el mapa
-        }
-    }
 
 	private void positionWindowHalfScreen(JFrame frame) {
 		// Obtener las dimensiones de la pantalla
@@ -108,4 +101,39 @@ public class MapWindow {
 		// Establecer la ubicación de la ventana
 		frame.setLocation(x, y);
 	}
+
+	private void initializeMap() {
+		_mapa = new JMapViewer();
+		_mapa.setZoomControlsVisible(false);
+		Coordinate coordinate = new Coordinate(-40, -66);
+		_mapa.setDisplayPosition(coordinate, 4);
+		newFrame.getContentPane().add(_mapa);
+	}
+
+	private void loadVertices(List<Location> vertices) {
+		_vertices.clear();
+		for (Location vertice : vertices) {
+			int id = vertice.id();
+			if (!_vertices.containsKey(id)) {
+				_vertices.put(id, vertice);
+			}
+		}
+	}
+	
+	public boolean isVisible() {
+		return newFrame.isVisible();
+	}
+
+	public void close() {
+		newFrame.dispose();
+	}
+
+	public void setMarkersDot(List<Location> vertices) {
+		loadVertices(vertices);
+		printMarkers();
+		printConnections();
+	}
+
+
+
 }
