@@ -1,39 +1,33 @@
 package presentation;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-import org.openstreetmap.gui.jmapviewer.JMapViewer;
-import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
+import app.DisenandoRegiones;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Main {
 
-	private JFrame frame;
-    private MapWindow mapWindow = null;  // Referencia a NewWindow
+	private JFrame _frame;
+	private MapWindow _mapWindow = null; // Referencia a NewWindow
+	private DisenandoRegiones _app;
+	private int _regiones;
 
-	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Main window = new Main();
-					window.frame.setVisible(true);
+					window._frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,54 +35,99 @@ public class Main {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Main() {
-		initialize();
-		initializeMap();
+		_app = DisenandoRegiones.argentina();
+		_regiones = 1;
+		mainWindow();
+		title();
 		openMapButton();
+		comboBoxRegiones();
+		labelCantRegiones();
+		generarRegionesButton();
+
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+	private void mainWindow() {
+		_frame = new JFrame();
+		_frame.setResizable(false);
+		_frame.setBounds(100, 100, 800, 600);
+		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_frame.getContentPane().setLayout(null);
+	}
+
+	private void title() {
 		JLabel lblDiseandoRegiones = new JLabel("Diseñando Regiones");
 		lblDiseandoRegiones.setBounds(307, 51, 174, 30);
-		frame.getContentPane().add(lblDiseandoRegiones);
-
+		_frame.getContentPane().add(lblDiseandoRegiones);
 	}
-	
+
 	private void openMapButton() {
-		JButton btnOpenMap = new JButton("Open Map");
-		btnOpenMap.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-		        if (mapWindow == null || !mapWindow.isVisible()) {
-		        	mapWindow = new MapWindow();
-		        	List<Location> vertices = Arrays.asList(Location.values());
-		        	mapWindow.setMarkersDot(vertices);
-		        }		
+		JButton btnOpenMap = new JButton("Mapa Original");
+		btnOpenMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadMap(id -> _app.obtenerVecinos(id));
 			}
 		});
-
-		btnOpenMap.setBounds(318, 126, 105, 27);
-		frame.getContentPane().add(btnOpenMap);
+		btnOpenMap.setBounds(291, 82, 150, 27);
+		_frame.getContentPane().add(btnOpenMap);
 	}
-	
 
-	private void initializeMap() {
-		Coordinate coordinate = new Coordinate(-40, -67);
+	private void labelCantRegiones() {
+		JLabel label = new JLabel("Cantidad de regiones");
+		label.setBounds(70, 49, 141, 35);
+		_frame.getContentPane().add(label);
+	}
+
+	private void comboBoxRegiones() {
+		JComboBox<Integer> comboBox = new JComboBox<Integer>();
+		int cantVertices = _app.cantVertices();
 		
-		MapMarker marker1 = new MapMarkerDot("Aqui", coordinate);
-		marker1.getStyle().setBackColor(Color.red);
-		marker1.getStyle().setColor(Color.orange);
+		Integer[] regiones = new Integer[cantVertices];
+		for (int i = 0; i < cantVertices; i++) {
+			regiones[i] = i + 1;
+		}
+
+		comboBox.setModel(new DefaultComboBoxModel<Integer>(regiones));
+		comboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_regiones = (int) comboBox.getSelectedItem();
+			}
+		});
+		comboBox.setBounds(80, 80, 69, 30);
+		_frame.getContentPane().add(comboBox);
+	}
+
+	private void generarRegionesButton() {
+		JButton btnNewButton = new JButton("Generar Regiones");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadMap(id -> _app.obtenerVecinoDeAGM(id));
+			}
+		});
+		btnNewButton.setBounds(61, 126, 150, 27);
+		_frame.getContentPane().add(btnNewButton);
+	}
+
+	private void loadMap(VecinoStrategy strategy) {
+
+		if (_mapWindow != null) {
+			_mapWindow.close();
+		}
+
+		if (_mapWindow == null || !_mapWindow.isVisible()) {
+			_mapWindow = new MapWindow();
+
+			_app.generarRegiones(_regiones);
+
+			for (Location location : Location.values()) {
+				location.setVecinos(strategy.obtenerVecinos(location.id()));
+			}
+
+			List<Location> vertices = Arrays.asList(Location.values());
+
+			_mapWindow.setMarkersDot(vertices);
+		}
+
 	}
 }
