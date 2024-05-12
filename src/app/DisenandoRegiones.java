@@ -12,8 +12,9 @@ public class DisenandoRegiones {
 	private Grafo _grafo;
 	private Grafo _agm;
 
-	private DisenandoRegiones() {}
-	
+	private DisenandoRegiones() {
+	}
+
 	public static DisenandoRegiones argentina() {
 		int cant_provincias = 24;
 		DisenandoRegiones dr = new DisenandoRegiones();
@@ -21,23 +22,48 @@ public class DisenandoRegiones {
 		return dr;
 	}
 
+	public static DisenandoRegiones crear(int vertices) {
+		DisenandoRegiones dr = new DisenandoRegiones();
+		dr.personalizado(vertices);
+		return dr;
+	}
+
+	private void personalizado(int vertices) {
+		_grafo = new Grafo(vertices);
+		_agm = null;
+	}
+
+	public void eliminarVertice(int vertice) {
+		_grafo.eliminarVertice(vertice);
+	}
+	
 	public void agregarPeso(int origen, int destino, int peso) {
-		_grafo.actualizarPeso(origen, destino, peso);
+			_grafo.actualizarPeso(origen, destino, peso);
 	}
 
 	public List<Integer> obtenerVecinos(int origen) {
+		if (_agm != null) {
+			return _agm.obtenerVecinos(origen);
+		}
 		return _grafo.obtenerVecinos(origen);
 	}
 
 	public List<AristaDTO> obtenerAristasDe(int origen) {
-		Set<Arista> aristas = _grafo.obtenerAristasDe(origen);
+		Set<Arista> aristas;
+
+		if (_agm != null) {
+			aristas = _agm.obtenerAristasDe(origen);
+		} else {
+			aristas = _grafo.obtenerAristasDe(origen);
+		}
+
 		List<AristaDTO> aristasDTO = new ArrayList<>();
-		for(Arista arista : aristas) {
+		for (Arista arista : aristas) {
 			aristasDTO.add(new AristaDTO(arista.getOrigen(), arista.getDestino(), arista.getPeso()));
 		}
 		return aristasDTO;
 	}
-	
+
 	public void generarRegiones(int cantRegiones) {
 		_agm = Kruskal.generar(_grafo);
 
@@ -58,60 +84,69 @@ public class DisenandoRegiones {
 		}
 	}
 
-	public List<Integer> obtenerVecinoDeAGM(int vertice) {
-		return _agm.obtenerVecinos(vertice);
-	}
+//	public List<Integer> obtenerVecinoDeAGM(int vertice) {
+//		return _agm.obtenerVecinos(vertice);
+//	}
 
 	public int cantVertices() {
-		return _grafo.tamanio();
+		return _grafo.verticesDisponibles();
 	}
-
+	
+	public int agregarVertice() {
+		return _grafo.agregarVertice();
+	}
+	
+	public void reiniciar() {
+		_agm = null;
+	}
+	
 	private void crearArgentina(int cant_provincias) {
 		_grafo = new Grafo(cant_provincias);
 		// para visualizar el grafico de aristas, ver /utils/aristas argentina.jpg
-		_grafo.agregarArista(Vertice.JUJUY.getValue(), Vertice.SALTA.getValue(), 0);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CATAMARCA.getValue(), 0);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.TUCUMAN.getValue(), 0);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 0);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.FORMOSA.getValue(), 0);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CHACO.getValue(), 0);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.TUCUMAN.getValue(), 0);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 0);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.LA_RIOJA.getValue(), 0);
-		_grafo.agregarArista(Vertice.TUCUMAN.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CHACO.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.SANTA_FE.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CORDOBA.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.LA_RIOJA.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SAN_LUIS.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SANTA_FE.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.BUENOS_AIRES.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CHACO.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CORRIENTES.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.ENTRE_RIOS.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.BUENOS_AIRES.getValue(), 0);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.ENTRE_RIOS.getValue(), 0);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.CABA.getValue(), 0);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.LA_PAMPA.getValue(), 0);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.RIO_NEGRO.getValue(), 0);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.SAN_LUIS.getValue(), 0);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.MENDOZA.getValue(), 0);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.NEUQUEN.getValue(), 0);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.RIO_NEGRO.getValue(), 0);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.LA_RIOJA.getValue(), 0);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.SAN_JUAN.getValue(), 0);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.MENDOZA.getValue(), 0);
-		_grafo.agregarArista(Vertice.LA_RIOJA.getValue(), Vertice.SAN_JUAN.getValue(), 0);
-		_grafo.agregarArista(Vertice.SAN_JUAN.getValue(), Vertice.MENDOZA.getValue(), 0);
-		_grafo.agregarArista(Vertice.MENDOZA.getValue(), Vertice.NEUQUEN.getValue(), 0);
-		_grafo.agregarArista(Vertice.NEUQUEN.getValue(), Vertice.RIO_NEGRO.getValue(), 0);
-		_grafo.agregarArista(Vertice.RIO_NEGRO.getValue(), Vertice.CHUBUT.getValue(), 0);
-		_grafo.agregarArista(Vertice.CHUBUT.getValue(), Vertice.SANTA_CRUZ.getValue(), 0);
-		_grafo.agregarArista(Vertice.SANTA_CRUZ.getValue(), Vertice.TIERRA_DEL_FUEGO.getValue(), 0);
-		_grafo.agregarArista(Vertice.FORMOSA.getValue(), Vertice.CHACO.getValue(), 0);
-		_grafo.agregarArista(Vertice.CHACO.getValue(), Vertice.CORRIENTES.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.MISIONES.getValue(), 0);
-		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.ENTRE_RIOS.getValue(), 0);
+		_grafo.agregarArista(Vertice.JUJUY.getValue(), Vertice.SALTA.getValue(), 100);
+		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CATAMARCA.getValue(), 200);
+		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.TUCUMAN.getValue(), 150);
+		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 400);
+		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.FORMOSA.getValue(), 700);
+		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CHACO.getValue(), 650);
+		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.TUCUMAN.getValue(), 150);
+		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 300);
+		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.LA_RIOJA.getValue(), 100);
+		_grafo.agregarArista(Vertice.TUCUMAN.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 250);
+		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CHACO.getValue(), 550);
+		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.SANTA_FE.getValue(), 450);
+		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CORDOBA.getValue(), 200);
+		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.LA_RIOJA.getValue(), 600);
+		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SAN_LUIS.getValue(), 250);
+		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SANTA_FE.getValue(), 300);
+		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.BUENOS_AIRES.getValue(), 450);
+		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CHACO.getValue(), 600);
+		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CORRIENTES.getValue(), 550);
+		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.ENTRE_RIOS.getValue(), 150);
+		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.BUENOS_AIRES.getValue(), 350);
+		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.ENTRE_RIOS.getValue(), 250);
+		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.CABA.getValue(), 50);
+		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.LA_PAMPA.getValue(), 400);
+		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.RIO_NEGRO.getValue(), 850);
+		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.SAN_LUIS.getValue(), 500);
+		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.MENDOZA.getValue(), 700);
+		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.NEUQUEN.getValue(), 750);
+		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.RIO_NEGRO.getValue(), 800);
+		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.LA_RIOJA.getValue(), 400);
+		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.SAN_JUAN.getValue(), 150);
+		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.MENDOZA.getValue(), 100);
+		_grafo.agregarArista(Vertice.LA_RIOJA.getValue(), Vertice.SAN_JUAN.getValue(), 500);
+		_grafo.agregarArista(Vertice.SAN_JUAN.getValue(), Vertice.MENDOZA.getValue(), 150);
+		_grafo.agregarArista(Vertice.MENDOZA.getValue(), Vertice.NEUQUEN.getValue(), 850);
+		_grafo.agregarArista(Vertice.NEUQUEN.getValue(), Vertice.RIO_NEGRO.getValue(), 450);
+		_grafo.agregarArista(Vertice.RIO_NEGRO.getValue(), Vertice.CHUBUT.getValue(), 550);
+		_grafo.agregarArista(Vertice.CHUBUT.getValue(), Vertice.SANTA_CRUZ.getValue(), 650);
+		_grafo.agregarArista(Vertice.SANTA_CRUZ.getValue(), Vertice.TIERRA_DEL_FUEGO.getValue(), 750);
+		_grafo.agregarArista(Vertice.FORMOSA.getValue(), Vertice.CHACO.getValue(), 150);
+		_grafo.agregarArista(Vertice.CHACO.getValue(), Vertice.CORRIENTES.getValue(), 100);
+		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.MISIONES.getValue(), 200);
+		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.ENTRE_RIOS.getValue(), 650);
+
 	}
 
 	private void verificarGrafoNull(Grafo grafo) {
