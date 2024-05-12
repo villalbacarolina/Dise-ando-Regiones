@@ -69,13 +69,13 @@ public class Arista {
 
 	private void assertPesoValido(int peso) {
 		if (peso < 0) {
-			throw new IllegalArgumentException("El peso tiene que ser un número entero: " + peso);
+			throw new IllegalArgumentException("El peso tiene que ser un número Natural: " + peso);
 		}
 	}
 
 	private void assertVerticeValido(int vertice) {
 		if (vertice < 0) {
-			throw new IllegalArgumentException("El vértice tiene que ser un número entero: " + vertice);
+			throw new IllegalArgumentException("El vértice tiene que ser un número Natural: " + vertice);
 		}
 	}
 

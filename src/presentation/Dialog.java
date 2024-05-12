@@ -30,6 +30,9 @@ public abstract class Dialog implements Observable {
 		_panel = new JPanel();
 		_panel.setFocusable(true);
 		_panel.requestFocusInWindow();
+		_panel.setBounds(0, 0, 350, 211);
+		_frame.getContentPane().add(_panel);
+		_panel.setLayout(null);
 		_panel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -38,10 +41,10 @@ public abstract class Dialog implements Observable {
 				}
 			}
 		});
-		_panel.setBounds(0, 0, 350, 211);
-
-		_frame.getContentPane().add(_panel);
-		_panel.setLayout(null);
+	}
+	
+	public void close() {
+		_frame.dispose();
 	}
 
 	private void mainWindow() {
@@ -55,22 +58,18 @@ public abstract class Dialog implements Observable {
 		_frame.getContentPane().setLayout(null);
 		positionWindow();
 		_frame.setVisible(true);
-
 	}
 
 	abstract void initEvents();
 	
 	private void positionWindow() {
-		// Obtener las dimensiones de la pantalla
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = screenSize.width;
 		int screenHeight = screenSize.height;
 
-		// Calcular las coordenadas para centrar la ventana
 		int x = (screenWidth - _frame.getWidth() - 50) / 2;
 		int y = (screenHeight - _frame.getHeight()) / 2;
 
-		// Establecer la ubicación de la ventana
 		_frame.setLocation(x, y);
 	}
 

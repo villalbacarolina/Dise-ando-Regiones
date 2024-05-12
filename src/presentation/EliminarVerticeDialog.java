@@ -2,48 +2,42 @@ package presentation;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class EliminarVerticeWindow extends Dialog {
+import utils.InputUtils;
+
+public class EliminarVerticeDialog extends Dialog {
 
 	private JTextField _verticeInput;
-	
-	public EliminarVerticeWindow() {
+
+	public EliminarVerticeDialog() {
 		super();
 		createLabels();
 		createInputs();
 		initEvents();
 		eliminarButton();
 	}
-	
-	
-	
+
 	private void eliminarButton() {
-		JButton btnAgregar = new JButton("Conectar vértices");
-		btnAgregar.setBounds(110, 142, 126, 27);
+		JButton btnAgregar = new JButton("Eliminar vértice");
+		btnAgregar.setBounds(110, 142, 150, 27);
 		_panel.add(btnAgregar);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				Integer origen = Integer.parseInt(_verticeInput.getText());
-			
-//				app.agregarPeso(origen,destino,similaridad);
-				
-				EliminarVerticeWindow.this.notify("Eliminar", origen);
-				_frame.dispose();
+				try {
+					Integer origen = InputUtils.tryParseInt("Vértice", _verticeInput.getText());
+					EliminarVerticeDialog.this.notify("Eliminar", origen);
+					_frame.dispose();
+				} catch (Exception error) {
+					System.out.println(error.getMessage());
+				}
 			}
 		});
-		
 	}
-
-	
-	
-
 
 	private void createInputs() {
 		_verticeInput = new JTextField();
@@ -52,15 +46,11 @@ public class EliminarVerticeWindow extends Dialog {
 		_verticeInput.setColumns(10);
 	}
 
-
-
 	private void createLabels() {
 		JLabel origen = new JLabel("Vertice");
 		origen.setBounds(71, 40, 49, 17);
 		_panel.add(origen);
 	}
-
-
 
 	@Override
 	void initEvents() {
