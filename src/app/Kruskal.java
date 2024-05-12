@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 public class Kruskal {
 	
 	public static Grafo generar(Grafo grafo) {
 		grafo.validarQueNoEsteVacio();
+		
+		if(!BFS.esConexo(grafo)) {
+			throw new RuntimeException("El grafo no es conexo");
+		}
 		
         List<Arista> aristasGrafo = grafo.obtenerAristas();
         List<Arista> aristasGrafoPesoAscendente = Kruskal.ordenarAristas(aristasGrafo);
