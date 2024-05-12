@@ -17,6 +17,7 @@ public class KruskalTest {
 	public void inicializar(){
 		kruskal = new Kruskal();
 		grafo = new Grafo(10);
+		grafo.agregarArista(0, 1, 4); //A1-B2
 		grafo.agregarArista(1, 2, 4); //A1-B2
 		grafo.agregarArista(2, 3, 8); //B2-C3
 		grafo.agregarArista(3, 4, 6); //C3-D4
@@ -41,6 +42,7 @@ public class KruskalTest {
 		Grafo AGM_OpcionA = new Grafo(10);
 		Grafo AGM_OpcionB = new Grafo(10);
 		//OpcionA: con union entre A-H
+		AGM_OpcionA.agregarArista(0, 1, 4); //A1-B2
 		AGM_OpcionA.agregarArista(1, 2, 4); //A1-B2
 		AGM_OpcionA.agregarArista(1, 9, 8); //A1-H9
 		AGM_OpcionA.agregarArista(7, 9, 1); //G7-H9
@@ -50,6 +52,7 @@ public class KruskalTest {
 		AGM_OpcionA.agregarArista(3, 4, 6); //C3-D4
 		AGM_OpcionA.agregarArista(4, 5, 9); //D4-E5
 		//OpcionB: con union entre B-C
+		AGM_OpcionB.agregarArista(0, 1, 4); //A1-B2
 		AGM_OpcionB.agregarArista(1, 2, 4); //A1-B2
 		AGM_OpcionB.agregarArista(2, 3, 8); //B2-C3
 		AGM_OpcionB.agregarArista(7, 9, 1); //G7-H9
