@@ -1,6 +1,6 @@
 package utils;
 
-public enum Vertice {
+public enum Argentina {
 	JUJUY(0),
 	SALTA(1),
 	CATAMARCA(2),
@@ -28,7 +28,7 @@ public enum Vertice {
 
     private final int value;
 
-    Vertice(int value) {
+    Argentina(int value) {
         this.value = value;
     }
 
@@ -36,8 +36,8 @@ public enum Vertice {
         return this.value;
     }
     
-    public static Vertice getProvinciaPorNumero(int numero) {
-        for (Vertice provincia : Vertice.values()) {
+    public static Argentina getProvinciaPorNumero(int numero) {
+        for (Argentina provincia : Argentina.values()) {
             if (provincia.getValue() == numero) {
                 return provincia;
             }

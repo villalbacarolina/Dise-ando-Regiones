@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 public class Kruskal {
 	
 	public static Grafo generar(Grafo grafo) {

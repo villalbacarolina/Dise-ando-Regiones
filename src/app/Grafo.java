@@ -15,6 +15,7 @@ public class Grafo {
 	private int _cant_eliminados;
 	private Map<String, Arista> _aristas;
 	private int _nextID;
+	private Set<Integer> _verticesEliminados;
 
 	public Grafo(int vertices) {
 		if (vertices < 0) {
@@ -25,9 +26,9 @@ public class Grafo {
 		_vecinos = new HashMap<>();
 		_aristas = new HashMap<>();
 		_cant_eliminados = 0;
+		_verticesEliminados = new HashSet<>();
 
 		if (vertices == 0) {
-//			_vecinos.put(0, new ArrayList<>());
 			return;
 		}
 
@@ -42,15 +43,12 @@ public class Grafo {
 	public void eliminarVertice(int vertice) {
 		assertVerticeValido(vertice);
 		
-		System.out.println("vertice: " + vertice);
 		List<Integer> vecinos = new ArrayList<>(_vecinos.get(vertice));
-		
-		System.out.println("Vecinos: " + vecinos);
-		
-		vecinos.forEach(vecino -> eliminarArista(vertice, vecino) );
-//		vecinos.forEach(vecino -> _vecinos.get(vecino).remove(vertice));
-		// CLEAR
+			
+		vecinos.forEach(vecino -> eliminarArista(vertice, vecino));
+
 		_vecinos.get(vertice).clear();
+		_verticesEliminados.add(vertice);
 		_cant_eliminados++;
 	}
 
@@ -59,9 +57,7 @@ public class Grafo {
 		
 		_vecinos.put(_nextID, new ArrayList<>());
 		_nextID++;
-		
-		System.out.println("ID para el vertice: "+id);
-		
+				
 		return id;
 	}
 
@@ -98,7 +94,6 @@ public class Grafo {
 	}
 
 	public List<Integer> obtenerVecinos(int vertice) {
-//		assertVerticeValido(vertice);
 		return _vecinos.get(vertice);
 	}
 
@@ -125,7 +120,11 @@ public class Grafo {
 	}
 
 	public int tamanio() {
-		return this._vecinos.size();
+		return this._vecinos.size() ;
+	}
+	
+	public int eliminados() {
+		return _cant_eliminados;
 	}
 	
 	public int verticesDisponibles() {
@@ -135,8 +134,8 @@ public class Grafo {
 	public void actualizarPeso(int origen, int destino, int peso) {
 			assertVerticeValido(origen);
 			assertVerticeValido(destino);
+			
 			String clave = "" + origen + "-" + destino;
-
 			Arista arista = _aristas.get(clave);
 
 			if (arista != null) {
@@ -145,13 +144,10 @@ public class Grafo {
 			}
 
 			agregarArista(origen, destino, peso);
-
 	}
-
-	// VERIFICACIONES
-
+	
 	private void assertVerticeValido(int vertice) {
-		if (_vecinos.get(vertice) == null) {
+		if (_vecinos.get(vertice) == null || _verticesEliminados.contains(vertice)) {
 			throw new IllegalArgumentException("El vértice no existe: " + vertice);
 		}
 	}
@@ -159,14 +155,6 @@ public class Grafo {
 	public void validarQueNoEsteVacio() {
 		if (obtenerAristas().size() == 0)
 			throw new IllegalArgumentException("El grafo no tiene ningún componente conexa.");
-	}
-
-	// PARA DEBUGGEAR
-
-	public void mostrarAristas() {
-		for (Map.Entry<String, Arista> entry : _aristas.entrySet()) {
-			System.out.println("Clave: " + entry.getKey() + ", Valor: " + entry.getValue().getPeso());
-		}
 	}
 
 }

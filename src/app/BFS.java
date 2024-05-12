@@ -14,15 +14,11 @@ public class BFS {
 			throw new IllegalArgumentException("Se intento consultar un grafo que es null!!");
 		}
 			
-		
 		if(g.tamanio() == 0) {
 			return true;
 		}
 		
-		System.out.println(alcanzables(g, 0));
-		
-		System.out.println(g.tamanio());
-		return alcanzables(g, 0).size() == g.tamanio();
+		return alcanzables(g, 0).size() == g.tamanio()- g.eliminados();
 	}
 	
 	public static Set<Integer> alcanzables(Grafo g, int origen) {

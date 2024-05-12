@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import utils.AristaDTO;
-import utils.Vertice;
+import utils.Argentina;
 
 public class DisenandoRegiones {
 
@@ -84,11 +84,11 @@ public class DisenandoRegiones {
 		}
 	}
 
-//	public List<Integer> obtenerVecinoDeAGM(int vertice) {
-//		return _agm.obtenerVecinos(vertice);
-//	}
-
 	public int cantVertices() {
+		return _grafo.tamanio();
+	}
+	
+	public int cantVerticesDisponibles() {
 		return _grafo.verticesDisponibles();
 	}
 	
@@ -103,49 +103,49 @@ public class DisenandoRegiones {
 	private void crearArgentina(int cant_provincias) {
 		_grafo = new Grafo(cant_provincias);
 		// para visualizar el grafico de aristas, ver /utils/aristas argentina.jpg
-		_grafo.agregarArista(Vertice.JUJUY.getValue(), Vertice.SALTA.getValue(), 100);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CATAMARCA.getValue(), 200);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.TUCUMAN.getValue(), 150);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 400);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.FORMOSA.getValue(), 700);
-		_grafo.agregarArista(Vertice.SALTA.getValue(), Vertice.CHACO.getValue(), 650);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.TUCUMAN.getValue(), 150);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 300);
-		_grafo.agregarArista(Vertice.CATAMARCA.getValue(), Vertice.LA_RIOJA.getValue(), 100);
-		_grafo.agregarArista(Vertice.TUCUMAN.getValue(), Vertice.SANTIAGO_DEL_ESTERO.getValue(), 250);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CHACO.getValue(), 550);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.SANTA_FE.getValue(), 450);
-		_grafo.agregarArista(Vertice.SANTIAGO_DEL_ESTERO.getValue(), Vertice.CORDOBA.getValue(), 200);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.LA_RIOJA.getValue(), 600);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SAN_LUIS.getValue(), 250);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.SANTA_FE.getValue(), 300);
-		_grafo.agregarArista(Vertice.CORDOBA.getValue(), Vertice.BUENOS_AIRES.getValue(), 450);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CHACO.getValue(), 600);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.CORRIENTES.getValue(), 550);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.ENTRE_RIOS.getValue(), 150);
-		_grafo.agregarArista(Vertice.SANTA_FE.getValue(), Vertice.BUENOS_AIRES.getValue(), 350);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.ENTRE_RIOS.getValue(), 250);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.CABA.getValue(), 50);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.LA_PAMPA.getValue(), 400);
-		_grafo.agregarArista(Vertice.BUENOS_AIRES.getValue(), Vertice.RIO_NEGRO.getValue(), 850);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.SAN_LUIS.getValue(), 500);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.MENDOZA.getValue(), 700);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.NEUQUEN.getValue(), 750);
-		_grafo.agregarArista(Vertice.LA_PAMPA.getValue(), Vertice.RIO_NEGRO.getValue(), 800);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.LA_RIOJA.getValue(), 400);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.SAN_JUAN.getValue(), 150);
-		_grafo.agregarArista(Vertice.SAN_LUIS.getValue(), Vertice.MENDOZA.getValue(), 100);
-		_grafo.agregarArista(Vertice.LA_RIOJA.getValue(), Vertice.SAN_JUAN.getValue(), 500);
-		_grafo.agregarArista(Vertice.SAN_JUAN.getValue(), Vertice.MENDOZA.getValue(), 150);
-		_grafo.agregarArista(Vertice.MENDOZA.getValue(), Vertice.NEUQUEN.getValue(), 850);
-		_grafo.agregarArista(Vertice.NEUQUEN.getValue(), Vertice.RIO_NEGRO.getValue(), 450);
-		_grafo.agregarArista(Vertice.RIO_NEGRO.getValue(), Vertice.CHUBUT.getValue(), 550);
-		_grafo.agregarArista(Vertice.CHUBUT.getValue(), Vertice.SANTA_CRUZ.getValue(), 650);
-		_grafo.agregarArista(Vertice.SANTA_CRUZ.getValue(), Vertice.TIERRA_DEL_FUEGO.getValue(), 750);
-		_grafo.agregarArista(Vertice.FORMOSA.getValue(), Vertice.CHACO.getValue(), 150);
-		_grafo.agregarArista(Vertice.CHACO.getValue(), Vertice.CORRIENTES.getValue(), 100);
-		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.MISIONES.getValue(), 200);
-		_grafo.agregarArista(Vertice.CORRIENTES.getValue(), Vertice.ENTRE_RIOS.getValue(), 650);
+		_grafo.agregarArista(Argentina.JUJUY.getValue(), Argentina.SALTA.getValue(), 100);
+		_grafo.agregarArista(Argentina.SALTA.getValue(), Argentina.CATAMARCA.getValue(), 200);
+		_grafo.agregarArista(Argentina.SALTA.getValue(), Argentina.TUCUMAN.getValue(), 150);
+		_grafo.agregarArista(Argentina.SALTA.getValue(), Argentina.SANTIAGO_DEL_ESTERO.getValue(), 400);
+		_grafo.agregarArista(Argentina.SALTA.getValue(), Argentina.FORMOSA.getValue(), 700);
+		_grafo.agregarArista(Argentina.SALTA.getValue(), Argentina.CHACO.getValue(), 650);
+		_grafo.agregarArista(Argentina.CATAMARCA.getValue(), Argentina.TUCUMAN.getValue(), 150);
+		_grafo.agregarArista(Argentina.CATAMARCA.getValue(), Argentina.SANTIAGO_DEL_ESTERO.getValue(), 300);
+		_grafo.agregarArista(Argentina.CATAMARCA.getValue(), Argentina.LA_RIOJA.getValue(), 100);
+		_grafo.agregarArista(Argentina.TUCUMAN.getValue(), Argentina.SANTIAGO_DEL_ESTERO.getValue(), 250);
+		_grafo.agregarArista(Argentina.SANTIAGO_DEL_ESTERO.getValue(), Argentina.CHACO.getValue(), 550);
+		_grafo.agregarArista(Argentina.SANTIAGO_DEL_ESTERO.getValue(), Argentina.SANTA_FE.getValue(), 450);
+		_grafo.agregarArista(Argentina.SANTIAGO_DEL_ESTERO.getValue(), Argentina.CORDOBA.getValue(), 200);
+		_grafo.agregarArista(Argentina.CORDOBA.getValue(), Argentina.LA_RIOJA.getValue(), 600);
+		_grafo.agregarArista(Argentina.CORDOBA.getValue(), Argentina.SAN_LUIS.getValue(), 250);
+		_grafo.agregarArista(Argentina.CORDOBA.getValue(), Argentina.SANTA_FE.getValue(), 300);
+		_grafo.agregarArista(Argentina.CORDOBA.getValue(), Argentina.BUENOS_AIRES.getValue(), 450);
+		_grafo.agregarArista(Argentina.SANTA_FE.getValue(), Argentina.CHACO.getValue(), 600);
+		_grafo.agregarArista(Argentina.SANTA_FE.getValue(), Argentina.CORRIENTES.getValue(), 550);
+		_grafo.agregarArista(Argentina.SANTA_FE.getValue(), Argentina.ENTRE_RIOS.getValue(), 150);
+		_grafo.agregarArista(Argentina.SANTA_FE.getValue(), Argentina.BUENOS_AIRES.getValue(), 350);
+		_grafo.agregarArista(Argentina.BUENOS_AIRES.getValue(), Argentina.ENTRE_RIOS.getValue(), 250);
+		_grafo.agregarArista(Argentina.BUENOS_AIRES.getValue(), Argentina.CABA.getValue(), 50);
+		_grafo.agregarArista(Argentina.BUENOS_AIRES.getValue(), Argentina.LA_PAMPA.getValue(), 400);
+		_grafo.agregarArista(Argentina.BUENOS_AIRES.getValue(), Argentina.RIO_NEGRO.getValue(), 850);
+		_grafo.agregarArista(Argentina.LA_PAMPA.getValue(), Argentina.SAN_LUIS.getValue(), 500);
+		_grafo.agregarArista(Argentina.LA_PAMPA.getValue(), Argentina.MENDOZA.getValue(), 700);
+		_grafo.agregarArista(Argentina.LA_PAMPA.getValue(), Argentina.NEUQUEN.getValue(), 750);
+		_grafo.agregarArista(Argentina.LA_PAMPA.getValue(), Argentina.RIO_NEGRO.getValue(), 800);
+		_grafo.agregarArista(Argentina.SAN_LUIS.getValue(), Argentina.LA_RIOJA.getValue(), 400);
+		_grafo.agregarArista(Argentina.SAN_LUIS.getValue(), Argentina.SAN_JUAN.getValue(), 150);
+		_grafo.agregarArista(Argentina.SAN_LUIS.getValue(), Argentina.MENDOZA.getValue(), 100);
+		_grafo.agregarArista(Argentina.LA_RIOJA.getValue(), Argentina.SAN_JUAN.getValue(), 500);
+		_grafo.agregarArista(Argentina.SAN_JUAN.getValue(), Argentina.MENDOZA.getValue(), 150);
+		_grafo.agregarArista(Argentina.MENDOZA.getValue(), Argentina.NEUQUEN.getValue(), 850);
+		_grafo.agregarArista(Argentina.NEUQUEN.getValue(), Argentina.RIO_NEGRO.getValue(), 450);
+		_grafo.agregarArista(Argentina.RIO_NEGRO.getValue(), Argentina.CHUBUT.getValue(), 550);
+		_grafo.agregarArista(Argentina.CHUBUT.getValue(), Argentina.SANTA_CRUZ.getValue(), 650);
+		_grafo.agregarArista(Argentina.SANTA_CRUZ.getValue(), Argentina.TIERRA_DEL_FUEGO.getValue(), 750);
+		_grafo.agregarArista(Argentina.FORMOSA.getValue(), Argentina.CHACO.getValue(), 150);
+		_grafo.agregarArista(Argentina.CHACO.getValue(), Argentina.CORRIENTES.getValue(), 100);
+		_grafo.agregarArista(Argentina.CORRIENTES.getValue(), Argentina.MISIONES.getValue(), 200);
+		_grafo.agregarArista(Argentina.CORRIENTES.getValue(), Argentina.ENTRE_RIOS.getValue(), 650);
 
 	}
 

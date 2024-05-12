@@ -12,7 +12,6 @@ public class UnionFind {
 	}
 	
 	public UnionFind(int size) {
-		System.out.println("UnionFind: "+ size);
 		if (size <= 0) {
 			throw new IllegalArgumentException("size debe ser positivo");
 		}
@@ -59,9 +58,7 @@ public class UnionFind {
 		if (i < 0) {
 			throw new IllegalArgumentException("Los vertices no pueden ser negativos: "+ i);
 		}
-		
-		System.out.println("Vertice:" + i);
-		
+				
 		if (i >= parents.length) {
 			throw new IllegalArgumentException("Los vertices deben estar entre 0 y |V|-1: " + i);
 		}

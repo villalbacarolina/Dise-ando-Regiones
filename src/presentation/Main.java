@@ -7,11 +7,7 @@ import javax.swing.JLabel;
 
 import app.DisenandoRegiones;
 import utils.AristaDTO;
-import utils.MapWindowEvent;
 import utils.MarkDTO;
-import utils.MarkerSelector;
-import utils.VecinoStrategy;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,13 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import java.awt.Font;
-import java.awt.Color;
 import javax.swing.SwingConstants;
 
 public class Main extends JFrame {
@@ -33,12 +27,11 @@ public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JFrame _frame;
 	private MapWindow _mapWindow = null; // Referencia a NewWindow
-	private AgregarVerticeWindow _agregarVerticeWindow = null;
-	private ConectarVerticesWindow _conectarVerticeWindow = null;
-	private EliminarVerticeWindow _eliminarVerticeWindow = null;
+	private AgregarVerticeDialog _agregarVerticeWindow = null;
+	private ConectarVerticesDialog _conectarVerticeWindow = null;
+	private EliminarVerticeDialog _eliminarVerticeWindow = null;
 	private DisenandoRegiones _app;
 	private int _regiones; // cantidad de regiones
-//	private JLabel _labelSelected;
 	private JTextField _similaridadInput;
 	private JPanel _panel_2;
 	private JPanel _panel_3;
@@ -46,25 +39,16 @@ public class Main extends JFrame {
 	private JButton btnActualizarSimilaridad;
 	private int _provincia_seleccionada_id;
 	private JComboBox<String> _provinciasLimitrofesBox;
-//	private int _similaridad;
 	private int[] _similaridadesLimitrofes;
-
-//	private boolean _customMap;
 	private Map<Integer, Location> _locationsByID;
 	private Map<String, Location> _locationsByNames;
 	private int _provincia_box_seleccionada;
 	private JComboBox<Integer> _regionesBox;
-
-	private JTextField origen;
-	private JTextField destino;
-	private JTextField peso;
 	private JButton _btnArgentina;
 	private JButton _btnPersonalizado;
 	private JButton _btnAddVertice;
 	private JButton _btnConectar;
 	private JButton _btnEliminarVertice;
-//	private JComboBox<String> _provinciasLimitrofes;
-//	private Integer[] _regionesDisponibles;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -81,7 +65,6 @@ public class Main extends JFrame {
 
 	public Main() {
 		_regiones = 1;
-//		_similaridad = 0;
 		_locationsByID = new HashMap<>();
 		_locationsByNames = new HashMap<>();
 		createMainWindow();
@@ -91,15 +74,9 @@ public class Main extends JFrame {
 		btnAgregarVertice();
 		btnEliminarVertice();
 		btnConectarVertices();
-		loadPanels();
-		_frame.setVisible(true);
-
-	}
-
-	private void loadPanels() {
-//		panel1();
 		panel2();
 		panel3();
+		_frame.setVisible(true);
 
 	}
 
@@ -113,8 +90,6 @@ public class Main extends JFrame {
 				_btnAddVertice.setVisible(true);
 				_btnConectar.setVisible(true);
 				_btnEliminarVertice.setVisible(true);
-//				_customMap = true;
-				//loadPanels();
 				loadMap();
 			}
 		});
@@ -133,7 +108,6 @@ public class Main extends JFrame {
 				_btnConectar.setVisible(true);
 				_btnEliminarVertice.setVisible(true);
 				loadArgentinaLocations();
-//				loadPanels();
 				loadMap();
 			}
 
@@ -193,42 +167,67 @@ public class Main extends JFrame {
 	private void btnConectarVertices() {
 		_btnConectar = new JButton("Conectar");
 		_btnConectar.setBounds(37, 132, 150, 27);
-		_btnConectar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_conectarVerticeWindow = new ConectarVerticesWindow(_app);
-//				_conectarVerticeWindow.addObserver("Connect", x -> loadMap());
-				_conectarVerticeWindow.addObserver("Connect", x -> updateLugaresEnMapa());
-			}
-		});
 		_btnConectar.setVisible(false);
 		_frame.getContentPane().add(_btnConectar);
+		_btnConectar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				cerrarDialogos();
+
+				_conectarVerticeWindow = new ConectarVerticesDialog(_app);
+
+				_conectarVerticeWindow.addObserver("Connect", x -> updateLugaresEnMapa());
+			}
+
+		});
+	}
+
+	private void cerrarDialogos() {
+		if (_agregarVerticeWindow != null) {
+			_agregarVerticeWindow.close();
+			_agregarVerticeWindow = null;
+		}
+
+		if (_conectarVerticeWindow != null) {
+			_conectarVerticeWindow.close();
+			_conectarVerticeWindow = null;
+		}
+
+		if (_eliminarVerticeWindow != null) {
+			_eliminarVerticeWindow.close();
+			_eliminarVerticeWindow = null;
+		}
+
 	}
 
 	private void btnEliminarVertice() {
 		_btnEliminarVertice = new JButton("Eliminar Vertice");
-		_btnEliminarVertice.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_eliminarVerticeWindow = new EliminarVerticeWindow();
-				_eliminarVerticeWindow.addObserver("Eliminar", id -> eliminarVertice(id));
-
-			}
-		});
 		_btnEliminarVertice.setBounds(37, 171, 150, 27);
 		_btnEliminarVertice.setVisible(false);
 		_frame.getContentPane().add(_btnEliminarVertice);
+		_btnEliminarVertice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cerrarDialogos();
+				_eliminarVerticeWindow = new EliminarVerticeDialog();
+				_eliminarVerticeWindow.addObserver("Eliminar", id -> eliminarVertice(id));
+			}
+		});
+
 	}
 
 	private void btnAgregarVertice() {
 		_btnAddVertice = new JButton("Agregar vertice");
 		_btnAddVertice.setBounds(37, 93, 150, 27);
+		_btnAddVertice.setVisible(false);
+		_frame.getContentPane().add(_btnAddVertice);
 		_btnAddVertice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_agregarVerticeWindow = new AgregarVerticeWindow(_app);
+				cerrarDialogos();
+				_agregarVerticeWindow = new AgregarVerticeDialog(_app);
+
 				_agregarVerticeWindow.addObserver("Create", (location) -> updateVertices(location));
 			}
 		});
-		_btnAddVertice.setVisible(false);
-		_frame.getContentPane().add(_btnAddVertice);
 	}
 
 	private void eliminarVertice(Object vertice) {
@@ -245,7 +244,6 @@ public class Main extends JFrame {
 		_locationsByNames.remove(loc.placeName());
 
 		updateCantidadDeRegiones();
-//		_loadMap();
 		updateLugaresEnMapa();
 	}
 
@@ -254,6 +252,7 @@ public class Main extends JFrame {
 		if (!(location instanceof Location)) {
 			return;
 		}
+
 		Location loc = (Location) location;
 
 		_locationsByID.put(loc.id(), loc);
@@ -263,17 +262,17 @@ public class Main extends JFrame {
 	}
 
 	private void panel2() {
-
 		_panel_2 = new JPanel();
 		_panel_2.setBounds(250, 100, 311, 204);
-		_frame.getContentPane().add(_panel_2);
 		_panel_2.setLayout(null);
+		_panel_2.setVisible(false);
+		_frame.getContentPane().add(_panel_2);
 
 		_provincia_seleccionada = new JLabel("");
 		_provincia_seleccionada.setBounds(0, 0, 311, 20);
-		_panel_2.add(_provincia_seleccionada);
 		_provincia_seleccionada.setHorizontalAlignment(SwingConstants.CENTER);
 		_provincia_seleccionada.setFont(new Font("Dialog", Font.BOLD, 18));
+		_panel_2.add(_provincia_seleccionada);
 
 		JLabel lblProvinciasLimtrofes = new JLabel("Provincias limítrofes");
 		lblProvinciasLimtrofes.setHorizontalAlignment(SwingConstants.CENTER);
@@ -283,8 +282,8 @@ public class Main extends JFrame {
 		_similaridadInput = new JTextField();
 		_similaridadInput.setHorizontalAlignment(SwingConstants.CENTER);
 		_similaridadInput.setBounds(94, 129, 120, 21);
-		_panel_2.add(_similaridadInput);
 		_similaridadInput.setColumns(10);
+		_panel_2.add(_similaridadInput);
 
 		JLabel lblPeso = new JLabel("Similaridad");
 		lblPeso.setHorizontalAlignment(SwingConstants.CENTER);
@@ -292,25 +291,21 @@ public class Main extends JFrame {
 		_panel_2.add(lblPeso);
 
 		btnActualizarSimilaridad = new JButton("Actualizar");
-
+		btnActualizarSimilaridad.setBounds(104, 165, 105, 27);
+		_panel_2.add(btnActualizarSimilaridad);
 		btnActualizarSimilaridad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				Location origen = _locationsByID.get(_provincia_seleccionada_id);
 				Location destino = _locationsByNames.get(_provinciasLimitrofesBox.getSelectedItem());
 				int similaridad = Integer.parseInt(_similaridadInput.getText());
 				_app.agregarPeso(origen.id(), destino.id(), similaridad);
-
-				System.out.println("Tamaño: " + _similaridadesLimitrofes.length);
-				System.out.println(_provincia_box_seleccionada);
 				_similaridadesLimitrofes[_provincia_box_seleccionada] = similaridad;
 			}
 		});
-		btnActualizarSimilaridad.setBounds(104, 165, 105, 27);
 
 		_provinciasLimitrofesBox = new JComboBox<String>();
 		_provinciasLimitrofesBox.setBounds(34, 67, 246, 26);
-
+		_panel_2.add(_provinciasLimitrofesBox);
 		_provinciasLimitrofesBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -318,21 +313,16 @@ public class Main extends JFrame {
 				updateSimilidadInput(_similaridadesLimitrofes[provIndex]);
 				_provincia_box_seleccionada = _provinciasLimitrofesBox.getSelectedIndex();
 			}
-
 		});
-
-		_panel_2.add(_provinciasLimitrofesBox);
-		_panel_2.add(btnActualizarSimilaridad);
-
-		_panel_2.setVisible(false);
-
 	}
 
 	private void panel3() {
 		_panel_3 = new JPanel();
 		_panel_3.setBounds(250, 360, 299, 156);
-		_frame.getContentPane().add(_panel_3);
 		_panel_3.setLayout(null);
+		_panel_3.setVisible(false);
+		_frame.getContentPane().add(_panel_3);
+
 		JLabel lblCantidadDeRegiones = new JLabel("Cantidad de regiones a visualizar");
 		lblCantidadDeRegiones.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCantidadDeRegiones.setBounds(0, 47, 299, 17);
@@ -340,35 +330,28 @@ public class Main extends JFrame {
 
 		JLabel labelSelected_1 = new JLabel("Generar regiones");
 		labelSelected_1.setBounds(0, 0, 299, 35);
-		_panel_3.add(labelSelected_1);
 		labelSelected_1.setHorizontalAlignment(SwingConstants.CENTER);
 		labelSelected_1.setFont(new Font("Dialog", Font.BOLD, 20));
+		_panel_3.add(labelSelected_1);
 
 		JButton btnNewButton = new JButton("Generar Regiones");
 		btnNewButton.setBounds(70, 117, 150, 27);
+		_panel_3.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				generarRegiones();
 			}
-
 		});
-
-		_panel_3.add(btnNewButton);
 
 		_regionesBox = new JComboBox<Integer>();
 		_regionesBox.setBounds(104, 70, 69, 30);
+		_panel_3.add(_regionesBox);
 		_regionesBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				_regiones = (int) _regionesBox.getSelectedItem();
 			}
 		});
-
-		_panel_3.add(_regionesBox);
-		
-		_panel_3.setVisible(false);
-//-----		loadCantidadRegiones();
-//		updateCantidadDeRegiones();
 	}
 
 	private void updateSimilidadInput(int similaridad) {
@@ -383,16 +366,14 @@ public class Main extends JFrame {
 
 		if (_mapWindow == null || !_mapWindow.isVisible()) {
 			_mapWindow = new MapWindow();
-
+			_mapWindow.addObserver("DotClicked", (mark) -> dotClicked(mark));
 			updateLugaresEnMapa();
-			_mapWindow.addObserver(MapWindowEvent.DOT_CLICKED.toString(), (mark) -> dotClicked(mark));
-
 		}
 
 	}
 
 	private void updateLugaresEnMapa() {
-		
+
 		List<Location> vertices = new ArrayList<>();
 
 		for (Location location : _locationsByID.values()) {
@@ -407,11 +388,12 @@ public class Main extends JFrame {
 		if (!(o instanceof MarkDTO)) {
 			return;
 		}
+
 		MarkDTO mark = (MarkDTO) o;
 
 		mostrarPanel(_panel_2);
 		mostrarPanel(_panel_3);
-		loadProvinciaSeleccionada(mark.name());
+		loadProvinciaSeleccionada(mark);
 		loadProvinciasLimitrofes(mark);
 		updateActualizarBtn();
 		updateCantidadDeRegiones();
@@ -445,7 +427,6 @@ public class Main extends JFrame {
 			index++;
 		}
 
-//		loadProvinciasLimitrofes(provinciasLimitrofes);
 		_provinciasLimitrofesBox.setModel(new DefaultComboBoxModel<String>(provinciasLimitrofes));
 		_similaridadesLimitrofes = similaridades;
 		_provincia_box_seleccionada = 0;
@@ -463,23 +444,8 @@ public class Main extends JFrame {
 		panel.setVisible(true);
 	}
 
-	private void loadCantidadRegiones() {
-		_regionesBox = new JComboBox<Integer>();
-		_regionesBox.setBounds(104, 70, 69, 30);
-		_regionesBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_regiones = (int) _regionesBox.getSelectedItem();
-			}
-		});
-
-		_panel_3.add(_regionesBox);
-
-	}
-
 	private void updateCantidadDeRegiones() {
-		int cantVertices = _app.cantVertices();
-
+		int cantVertices = _app.cantVerticesDisponibles();
 		Integer[] regiones = new Integer[cantVertices];
 		for (int i = 0; i < cantVertices; i++) {
 			regiones[i] = i + 1;
@@ -487,13 +453,9 @@ public class Main extends JFrame {
 		_regionesBox.setModel(new DefaultComboBoxModel<Integer>(regiones));
 	}
 
-	private void updateProvinciasLimitrofes(String[] provinciasLimitrofes) {
-		_provinciasLimitrofesBox.setModel(new DefaultComboBoxModel<String>(provinciasLimitrofes));
-	}
-
-	private void loadProvinciaSeleccionada(String prov) {
-		_provincia_seleccionada.setText(prov);
-		_provincia_seleccionada_id = _locationsByNames.get(prov).id();
+	private void loadProvinciaSeleccionada(MarkDTO mark) {
+		_provincia_seleccionada.setText(mark.name());
+		_provincia_seleccionada_id = _locationsByNames.get(mark.name()).id();
 	}
 
 	private void generarRegiones() {
@@ -502,9 +464,7 @@ public class Main extends JFrame {
 			_btnAddVertice.setVisible(false);
 			_btnConectar.setVisible(false);
 			_btnEliminarVertice.setVisible(false);
-//			loadMap();
 			updateLugaresEnMapa();
-			
 		} catch (Exception error) {
 			System.out.println(error.getMessage());
 		}
