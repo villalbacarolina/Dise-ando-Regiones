@@ -94,6 +94,7 @@ public class Grafo {
 	}
 
 	public List<Integer> obtenerVecinos(int vertice) {
+		assertVerticeValido(vertice);
 		return _vecinos.get(vertice);
 	}
 
