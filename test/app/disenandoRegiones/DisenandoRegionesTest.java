@@ -1,90 +1,64 @@
 package app.disenandoRegiones;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
 import app.DisenandoRegiones;
 import app.Grafo;
 
-
 public class DisenandoRegionesTest {
 
-//	@Test(expected=IllegalArgumentException.class)
-//	public void generarRegionesCantNegativaTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-////		Grafo grafo = crearGrafoEstrella6Vertices();
-//		disReg.generarRegiones(-1);
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void generarRegionesCantExcesivaTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-////		Grafo grafo = crearGrafoEstrella6Vertices();
-//		disReg.generarRegiones(7);
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void generarRegionesGrafoNullTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-//		@SuppressWarnings("unused")
-//		Grafo nuevo = disReg.generarRegiones(3, null);
-//	}
-//	
-//	@Test
-//	public void generarRegionesTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-//		Grafo grafo = crearGrafoEstrella6Vertices();
-//		Grafo nuevo = disReg.generarRegiones(3, grafo);
-//		Grafo esperado = crearGrafoEstrella6VerticesDisconexo3Regiones();
-//		
-//		assertEquals(esperado.obtenerAristas().size(), nuevo.obtenerAristas().size());
-//	}
-//	
-//	@Test
-//	public void generarRegionesMismaCantTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-//		Grafo grafo = crearGrafoEstrella6Vertices();
-//		Grafo nuevo = disReg.generarRegiones(6, grafo);
-//		
-//		Grafo esperado = crearGrafo6VerticesDisconexo();
-//		assertEquals(esperado.obtenerAristas(), nuevo.obtenerAristas());
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void generarRegionesGrafoSinAristasTest() {
-//		DisenandoRegiones disReg = new DisenandoRegiones();
-//		Grafo grafo = crearGrafo6VerticesDisconexo();
-//		@SuppressWarnings("unused")
-//		Grafo nuevo = disReg.generarRegiones(6, grafo);
-//	}
-//	
-//	
-//	private Grafo crearGrafoEstrella6Vertices() {
-//		Grafo grafo = new Grafo(6);
-//		
-//		grafo.agregarArista(0, 1, 10);
-//		grafo.agregarArista(0, 2, 5);
-//		grafo.agregarArista(0, 3, 8);
-//		grafo.agregarArista(0, 4, 3);
-//		grafo.agregarArista(0, 5, 1);
-//		
-//		return grafo;
-//	}
-//	
-//	private Grafo crearGrafoEstrella6VerticesDisconexo3Regiones() {
-//		Grafo grafo = new Grafo(6);
-//		
-//		grafo.agregarArista(0, 2, 5);
-//		grafo.agregarArista(0, 4, 3);
-//		grafo.agregarArista(0, 5, 1);
-//		
-//		return grafo;
-//	}
-//	
-//	private Grafo crearGrafo6VerticesDisconexo() {
-//		Grafo grafo = new Grafo(6);
-//		return grafo;
-//	}
+	@Test(expected = IllegalArgumentException.class)
+	public void generarRegionesCantNegativaTest() {
+		DisenandoRegiones disReg = DisenandoRegiones.crear(0);
+		disReg.generarRegiones(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void generarRegionesCantExcesivaTest() {
+		DisenandoRegiones disReg = DisenandoRegiones.crear(3);
+		disReg.generarRegiones(7);
+	}
+
+	@Test
+	public void generarRegionesTest() {
+		DisenandoRegiones app = setup();
+
+		app.generarRegiones(1);
+
+		assertEquals(app.obtenerAristasDe(0).size(), 1);
+		assertEquals(app.obtenerAristasDe(1).size(), 2);
+		assertEquals(app.obtenerAristasDe(2).size(), 2);
+		assertEquals(app.obtenerAristasDe(3).size(), 1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void generarRegionesGrafoSinAristasTest() {
+		DisenandoRegiones disReg = DisenandoRegiones.crear(4);
+		disReg.generarRegiones(2);
+	}
+
+	private DisenandoRegiones setup() {
+
+		DisenandoRegiones app = DisenandoRegiones.crear(4);
+
+		app.agregarPeso(0, 1, 10);
+		app.agregarPeso(1, 2, 10);
+		app.agregarPeso(2, 3, 10);
+		app.agregarPeso(0, 2, 20);
+		app.agregarPeso(0, 3, 50);
+
+		return app;
+	}
+
+	private Grafo grafo1Region() {
+		Grafo g = new Grafo(4);
+
+		g.agregarArista(0, 1, 10);
+		g.agregarArista(1, 2, 10);
+		g.agregarArista(2, 3, 10);
+
+		return g;
+
+	}
 
 }

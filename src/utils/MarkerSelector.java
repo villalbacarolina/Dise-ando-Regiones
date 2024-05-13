@@ -6,5 +6,5 @@ import presentation.Location;
 
 @FunctionalInterface
 public interface MarkerSelector {
-    MapMarkerDot createMarker(Location location);
+	MapMarkerDot createMarker(Location location);
 }

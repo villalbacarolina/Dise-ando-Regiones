@@ -1,7 +1,7 @@
 package utils;
 
 public class InputUtils {
-	
+
 	public static Integer tryParseInt(String inputName, String value) {
 		try {
 			return Integer.parseInt(value);
@@ -9,7 +9,7 @@ public class InputUtils {
 			throw new IllegalArgumentException(inputName + " -> Tiene que ser un número Natural: " + value);
 		}
 	}
-	
+
 	public static Double tryParseDouble(String inputName, String value) {
 		try {
 			return Double.valueOf(value);

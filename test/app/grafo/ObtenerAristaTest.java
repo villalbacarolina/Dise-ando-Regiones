@@ -44,5 +44,5 @@ public class ObtenerAristaTest {
 		Grafo g = new Grafo(cantVertices);
 		return g;
 	}
-
+	
 }

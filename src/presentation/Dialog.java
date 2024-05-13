@@ -42,7 +42,7 @@ public abstract class Dialog implements Observable {
 			}
 		});
 	}
-	
+
 	public void close() {
 		_frame.dispose();
 	}
@@ -61,7 +61,7 @@ public abstract class Dialog implements Observable {
 	}
 
 	abstract void initEvents();
-	
+
 	private void positionWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = screenSize.width;
@@ -79,7 +79,7 @@ public abstract class Dialog implements Observable {
 		if (!_observers.containsKey(event)) {
 			throw new RuntimeException("Evento no existe:" + event);
 		}
-		
+
 		Set<Observer> observers = _observers.get(event);
 		observers.add(observer);
 	}

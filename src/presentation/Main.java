@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 
 import app.DisenandoRegiones;
 import utils.AristaDTO;
+import utils.InputUtils;
 import utils.MarkDTO;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -243,6 +244,7 @@ public class Main extends JFrame {
 		_locationsByID.remove(loc.id());
 		_locationsByNames.remove(loc.placeName());
 
+		_panel_2.setVisible(false);
 		updateCantidadDeRegiones();
 		updateLugaresEnMapa();
 	}
@@ -295,11 +297,15 @@ public class Main extends JFrame {
 		_panel_2.add(btnActualizarSimilaridad);
 		btnActualizarSimilaridad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Location origen = _locationsByID.get(_provincia_seleccionada_id);
-				Location destino = _locationsByNames.get(_provinciasLimitrofesBox.getSelectedItem());
-				int similaridad = Integer.parseInt(_similaridadInput.getText());
-				_app.agregarPeso(origen.id(), destino.id(), similaridad);
-				_similaridadesLimitrofes[_provincia_box_seleccionada] = similaridad;
+				try {
+					Location origen = _locationsByID.get(_provincia_seleccionada_id);
+					Location destino = _locationsByNames.get(_provinciasLimitrofesBox.getSelectedItem());
+					int similaridad = InputUtils.tryParseInt("Similaridad", _similaridadInput.getText());
+					_app.agregarPeso(origen.id(), destino.id(), similaridad);
+					_similaridadesLimitrofes[_provincia_box_seleccionada] = similaridad;
+				} catch (Exception error) {
+					System.out.println(error.getMessage());
+				}
 			}
 		});
 

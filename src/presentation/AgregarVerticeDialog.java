@@ -80,7 +80,5 @@ public class AgregarVerticeDialog extends Dialog implements Observable {
 		lblLatidud.setBounds(73, 69, 47, 17);
 		_panel.add(lblLatidud);
 	}
-	
-	
 
 }

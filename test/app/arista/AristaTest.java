@@ -15,100 +15,70 @@ public class AristaTest {
 		int peso = 200;
 		new Arista(origen, destino, peso);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void pesoNegativo_LanzaError() {
 		int origen = 1;
 		int destino = 1;
 		int peso = -1;
-		new Arista(origen,destino,peso);
+		new Arista(origen, destino, peso);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void origenNegativo_LanzaError() {
 		int origen = -1;
 		int destino = 1;
 		int peso = 100;
-		new Arista(origen,destino,peso);
+		new Arista(origen, destino, peso);
 
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void destinoNegativo_LanzaError() {
 		int origen = 1;
 		int destino = -1;
 		int peso = 100;
-		new Arista(origen,destino,peso);
-	}
-	
-	@Test
-	public void aristasMismosValores() {
-		int origen = 1;
-		int destino = 2;
-		int peso = 100;
-		Arista a = new Arista(origen,destino,peso);
-		Arista b = new Arista(origen,destino,peso);
-		assertTrue(a.equals(b));
+		new Arista(origen, destino, peso);
 	}
 
-	@Test
-	public void distintosOrigenesEnConexion() {
-		int origen = 1;
-		int origen2 = 0;
-		int destino = 2;
-		int peso = 100;
-		Arista a = new Arista(origen,destino,peso);
-		Arista b = new Arista(destino,origen2,peso);
-		
-		assertFalse(a.esMismaConexion(b));
-	}
-	
-	@Test
-	public void distintosDestinosEnConexion() {
-		int origen = 1;
-		int destino2 = 0;
-		int destino = 2;
-		int peso = 100;
-		Arista a = new Arista(origen,destino,peso);
-		Arista b = new Arista(destino2,origen,peso);
-		
-		assertFalse(a.esMismaConexion(b));
-	}
-	
-	@Test
-	public void distintospesosEnConexion() {
-		int origen = 1;
-		int destino = 2;
-		int peso = 100;
-		int peso2 = 99;
-		Arista a = new Arista(origen,destino,peso);
-		Arista b = new Arista(destino,origen,peso2);
-		
-		assertFalse(a.esMismaConexion(b));
-	}
-	
-	@Test
-	public void mismaConexion() {
-		int origen = 1;
-		int destino = 2;
-		int peso = 100;
-		Arista a = new Arista(origen,destino,peso);
-		Arista b = new Arista(destino,origen,peso);
-		
-		assertTrue(a.esMismaConexion(b));
-	}
-	
 	@Test
 	public void actualizarPeso() {
 		int origen = 1;
 		int destino = 2;
 		int peso = 100;
-		Arista a = new Arista(origen,destino,peso);
+		Arista a = new Arista(origen, destino, peso);
 		int nuevoPeso = 200;
-		
+
 		a.setPeso(nuevoPeso);
-		
+
 		assertEquals(a.getPeso(), nuevoPeso);
 	}
+	
+	
+	@Test
+	public void obtenerClaveOrigenDestino() {
+		int origen = 1;
+		int destino = 2;
+		int peso = 100;
+		Arista a = new Arista(origen, destino, peso);
+
+		String clave = "" + origen + "-" + destino;
+
+		assertEquals(a.getClaveOrigenDestino(), clave);
+	}
+	
+	@Test
+	public void obtenerClaveDestinoOrigen() {
+		int origen = 1;
+		int destino = 2;
+		int peso = 100;
+		Arista a = new Arista(origen, destino, peso);
+
+		String clave = "" + destino + "-" + origen;
+
+		assertEquals(a.getClaveDestinoOrigen(), clave);
+	}
+	
+
 	
 }
