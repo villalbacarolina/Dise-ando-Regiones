@@ -36,9 +36,9 @@ public class DisenandoRegiones {
 	public void eliminarVertice(int vertice) {
 		_grafo.eliminarVertice(vertice);
 	}
-	
+
 	public void agregarPeso(int origen, int destino, int peso) {
-			_grafo.actualizarPeso(origen, destino, peso);
+		_grafo.actualizarPeso(origen, destino, peso);
 	}
 
 	public List<Integer> obtenerVecinos(int origen) {
@@ -67,7 +67,6 @@ public class DisenandoRegiones {
 	public void generarRegiones(int cantRegiones) {
 		_agm = Kruskal.generar(_grafo);
 
-		verificarGrafoNull(_agm);
 		verificarCantRegiones(cantRegiones, _agm);
 		_agm.validarQueNoEsteVacio();
 
@@ -87,19 +86,19 @@ public class DisenandoRegiones {
 	public int cantVertices() {
 		return _grafo.tamanio();
 	}
-	
+
 	public int cantVerticesDisponibles() {
 		return _grafo.verticesDisponibles();
 	}
-	
+
 	public int agregarVertice() {
 		return _grafo.agregarVertice();
 	}
-	
+
 	public void reiniciar() {
 		_agm = null;
 	}
-	
+
 	private void crearArgentina(int cant_provincias) {
 		_grafo = new Grafo(cant_provincias);
 		// para visualizar el grafico de aristas, ver /utils/aristas argentina.jpg
@@ -147,12 +146,6 @@ public class DisenandoRegiones {
 		_grafo.agregarArista(Argentina.CORRIENTES.getValue(), Argentina.MISIONES.getValue(), 200);
 		_grafo.agregarArista(Argentina.CORRIENTES.getValue(), Argentina.ENTRE_RIOS.getValue(), 650);
 
-	}
-
-	private void verificarGrafoNull(Grafo grafo) {
-		if (grafo == null) {
-			throw new IllegalArgumentException("El grafo no puede ser null");
-		}
 	}
 
 	private void verificarCantRegiones(int cantRegiones, Grafo grafo) {

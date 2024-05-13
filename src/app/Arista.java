@@ -30,16 +30,22 @@ public class Arista {
 	public String getClaveOrigenDestino() {
 		return "" + _origen + "-" + _destino;
 	}
-	
+
 	public String getClaveDestinoOrigen() {
 		return "" + _destino + "-" + _origen;
 	}
-	
+
 	public void setPeso(int peso) {
 		assertPesoValido(peso);
 		_peso = peso;
 	}
-	
+
+	private void assertPesoValido(int peso) {
+		if (peso < 0) {
+			throw new IllegalArgumentException("El peso tiene que ser un número Natural: " + peso);
+		}
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -54,23 +60,6 @@ public class Arista {
 		}
 
 		return true;
-	}
-
-	public boolean esMismaConexion(Arista otraArista) {
-		if (_peso != otraArista._peso) {
-			return false;
-		}
-
-		boolean esMismoOrigenYDestino = _origen == otraArista._origen && _destino == otraArista._destino;
-		boolean estanOrigenyDestinoInvertidos = _origen == otraArista._destino && _destino == otraArista._origen;
-
-		return esMismoOrigenYDestino || estanOrigenyDestinoInvertidos;
-	}
-
-	private void assertPesoValido(int peso) {
-		if (peso < 0) {
-			throw new IllegalArgumentException("El peso tiene que ser un número Natural: " + peso);
-		}
 	}
 
 	private void assertVerticeValido(int vertice) {

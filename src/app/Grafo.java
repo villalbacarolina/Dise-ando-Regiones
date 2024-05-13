@@ -12,10 +12,10 @@ import utils.NumberSearch;
 public class Grafo {
 
 	private Map<Integer, List<Integer>> _vecinos;
-	private int _cant_eliminados;
 	private Map<String, Arista> _aristas;
-	private int _nextID;
 	private Set<Integer> _verticesEliminados;
+	private int _cant_eliminados;
+	private int _nextID;
 
 	public Grafo(int vertices) {
 		if (vertices < 0) {
@@ -42,9 +42,9 @@ public class Grafo {
 
 	public void eliminarVertice(int vertice) {
 		assertVerticeValido(vertice);
-		
+
 		List<Integer> vecinos = new ArrayList<>(_vecinos.get(vertice));
-			
+
 		vecinos.forEach(vecino -> eliminarArista(vertice, vecino));
 
 		_vecinos.get(vertice).clear();
@@ -54,10 +54,10 @@ public class Grafo {
 
 	public int agregarVertice() {
 		int id = _nextID;
-		
+
 		_vecinos.put(_nextID, new ArrayList<>());
 		_nextID++;
-				
+
 		return id;
 	}
 
@@ -121,32 +121,32 @@ public class Grafo {
 	}
 
 	public int tamanio() {
-		return this._vecinos.size() ;
+		return this._vecinos.size();
 	}
-	
+
 	public int eliminados() {
 		return _cant_eliminados;
 	}
-	
+
 	public int verticesDisponibles() {
 		return tamanio() - _cant_eliminados;
 	}
 
 	public void actualizarPeso(int origen, int destino, int peso) {
-			assertVerticeValido(origen);
-			assertVerticeValido(destino);
-			
-			String clave = "" + origen + "-" + destino;
-			Arista arista = _aristas.get(clave);
+		assertVerticeValido(origen);
+		assertVerticeValido(destino);
 
-			if (arista != null) {
-				arista.setPeso(peso);
-				return;
-			}
+		String clave = "" + origen + "-" + destino;
+		Arista arista = _aristas.get(clave);
 
-			agregarArista(origen, destino, peso);
+		if (arista != null) {
+			arista.setPeso(peso);
+			return;
+		}
+
+		agregarArista(origen, destino, peso);
 	}
-	
+
 	private void assertVerticeValido(int vertice) {
 		if (_vecinos.get(vertice) == null || _verticesEliminados.contains(vertice)) {
 			throw new IllegalArgumentException("El vértice no existe: " + vertice);

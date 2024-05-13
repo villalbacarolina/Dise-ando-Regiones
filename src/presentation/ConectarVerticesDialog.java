@@ -25,17 +25,17 @@ public class ConectarVerticesDialog extends Dialog implements Observable {
 
 	private void createInputs() {
 		_origenInput = new JTextField();
-		_origenInput.setBounds(130, 38, 114, 21);
+		_origenInput.setBounds(145, 38, 114, 21);
 		_panel.add(_origenInput);
 		_origenInput.setColumns(10);
 
 		_destinoInput = new JTextField();
-		_destinoInput.setBounds(130, 67, 114, 21);
+		_destinoInput.setBounds(145, 67, 114, 21);
 		_panel.add(_destinoInput);
 		_destinoInput.setColumns(10);
 
 		_similaridadInput = new JTextField();
-		_similaridadInput.setBounds(130, 96, 114, 21);
+		_similaridadInput.setBounds(145, 96, 114, 21);
 		_panel.add(_similaridadInput);
 		_similaridadInput.setColumns(10);
 	}
@@ -50,13 +50,13 @@ public class ConectarVerticesDialog extends Dialog implements Observable {
 		_panel.add(destino);
 
 		JLabel similaridad = new JLabel("Similaridad");
-		similaridad.setBounds(71, 98, 55, 17);
+		similaridad.setBounds(71, 98, 75, 17);
 		_panel.add(similaridad);
 	}
 
 	private void connectButton(DisenandoRegiones app) {
 		JButton btnAgregar = new JButton("Conectar vértices");
-		btnAgregar.setBounds(110, 142, 126, 27);
+		btnAgregar.setBounds(100, 142, 150, 27);
 		_panel.add(btnAgregar);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
