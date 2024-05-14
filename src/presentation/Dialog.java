@@ -22,11 +22,11 @@ public abstract class Dialog implements Observable {
 
 	Dialog() {
 		_observers = new HashMap<>();
-		mainWindow();
-		createPanel();
+		ventanaPrincipal();
+		crearPanel();
 	}
 
-	private void createPanel() {
+	private void crearPanel() {
 		_panel = new JPanel();
 		_panel.setFocusable(true);
 		_panel.requestFocusInWindow();
@@ -47,7 +47,7 @@ public abstract class Dialog implements Observable {
 		_frame.dispose();
 	}
 
-	private void mainWindow() {
+	private void ventanaPrincipal() {
 		_frame = new JFrame("Nueva Ventana");
 		_frame.setType(Type.UTILITY);
 		_frame.setTitle("Agregar vertice");
@@ -56,43 +56,43 @@ public abstract class Dialog implements Observable {
 		_frame.setSize(350, 211);
 		_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		_frame.getContentPane().setLayout(null);
-		positionWindow();
+		posicionarVentana();
 		_frame.setVisible(true);
 	}
 
-	abstract void initEvents();
+	abstract void iniciarEventos();
 
-	private void positionWindow() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = screenSize.width;
-		int screenHeight = screenSize.height;
+	private void posicionarVentana() {
+		Dimension tamanioVentana = Toolkit.getDefaultToolkit().getScreenSize();
+		int ancho = tamanioVentana.width;
+		int alto = tamanioVentana.height;
 
-		int x = (screenWidth - _frame.getWidth() - 50) / 2;
-		int y = (screenHeight - _frame.getHeight()) / 2;
+		int x = (ancho - _frame.getWidth() - 50) / 2;
+		int y = (alto - _frame.getHeight()) / 2;
 
 		_frame.setLocation(x, y);
 	}
 
 	@Override
-	public void addObserver(String event, Observer observer) {
+	public void agregarObserver(String evento, Observer observer) {
 
-		if (!_observers.containsKey(event)) {
-			throw new RuntimeException("Evento no existe:" + event);
+		if (!_observers.containsKey(evento)) {
+			throw new RuntimeException("Evento no existe:" + evento);
 		}
 
-		Set<Observer> observers = _observers.get(event);
+		Set<Observer> observers = _observers.get(evento);
 		observers.add(observer);
 	}
 
 	@Override
-	public void notify(String event, Object dto) {
-		if (!_observers.containsKey(event)) {
-			throw new RuntimeException("Evento no existe:" + event);
+	public void notificar(String evento, Object dto) {
+		if (!_observers.containsKey(evento)) {
+			throw new RuntimeException("Evento no existe:" + evento);
 		}
 
-		Set<Observer> observers = _observers.get(event);
+		Set<Observer> observers = _observers.get(evento);
 		for (Observer observer : observers) {
-			observer.update(dto);
+			observer.actualizar(dto);
 		}
 	}
 

@@ -26,19 +26,19 @@ public enum Argentina {
     MISIONES(22),
     ENTRE_RIOS(23);
 
-    private final int value;
+    private final int id;
 
-    Argentina(int value) {
-        this.value = value;
+    Argentina(int id) {
+        this.id = id;
     }
 
-    public int getValue() {
-        return this.value;
+    public int getId() {
+        return this.id;
     }
     
     public static Argentina getProvinciaPorNumero(int numero) {
         for (Argentina provincia : Argentina.values()) {
-            if (provincia.getValue() == numero) {
+            if (provincia.getId() == numero) {
                 return provincia;
             }
         }

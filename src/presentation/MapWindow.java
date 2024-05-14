@@ -22,10 +22,12 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
-import utils.MarkDTO;
-import utils.MarkerSelector;
+
+import utils.MarcaDTO;
 import utils.Observable;
 import utils.Observer;
+import utils.TipoMarca;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -33,24 +35,24 @@ public class MapWindow implements Observable {
 	private JFrame newFrame;
 	private JMapViewer _mapa;
 	private Map<Integer, Location> _vertices;
-	private Map<Integer, MapMarker> _markers;
+	private Map<Integer, MapMarker> _marcas;
 	private Map<String, Set<Observer>> _observers;
-	private MarkerSelector _selectorType;
+	private TipoMarca _tipoMarca;
 	private JButton _btnVerNombres;
 	private JButton _btnVerIds;
 	private JButton btnOcultar;
 
 	public MapWindow() {
 		_vertices = new HashMap<>();
-		_markers = new HashMap<>();
-		_selectorType = Location::mark;
-		mainWindow();
-		positionWindowHalfScreen(newFrame);
-		initializeMap();
+		_marcas = new HashMap<>();
+		_tipoMarca = Location::marca;
+		ventanaPrincipal();
+		posicionarVentana(newFrame);
+		iniciarMapa();
 		btnMostrarNombres();
 		btnMostrarIds();
 		btnOcultarReferencias();
-		initEvents();
+		iniciarEventos();
 		newFrame.setVisible(true);
 	}
 
@@ -59,23 +61,21 @@ public class MapWindow implements Observable {
 		btnOcultar.setBounds(283, 611, 105, 27);
 		btnOcultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				printMarkers(Location::mark);
+				pintarMarcas(Location::marca);
 			}
 		});
 		_mapa.add(btnOcultar);
 	}
 
 	private void btnMostrarIds() {
-		{
-			_btnVerIds = new JButton("Ver IDs");
-			_btnVerIds.setBounds(160, 611, 105, 27);
-			_mapa.add(_btnVerIds);
-			_btnVerIds.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					printMarkers(Location::markWithId);
-				}
-			});
-		}
+		_btnVerIds = new JButton("Ver IDs");
+		_btnVerIds.setBounds(160, 611, 105, 27);
+		_mapa.add(_btnVerIds);
+		_btnVerIds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pintarMarcas(Location::marcaConID);
+			}
+		});
 	}
 
 	private void btnMostrarNombres() {
@@ -84,17 +84,17 @@ public class MapWindow implements Observable {
 		_mapa.add(_btnVerNombres);
 		_btnVerNombres.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				printMarkers(Location::markWithName);
+				pintarMarcas(Location::marcaConNombre);
 			}
 		});
 	}
 
-	private void initEvents() {
+	private void iniciarEventos() {
 		_observers = new HashMap<>();
 		_observers.put("DotClicked", new HashSet<>());
 	}
 
-	private void mainWindow() {
+	private void ventanaPrincipal() {
 		newFrame = new JFrame("Nueva Ventana");
 		newFrame.setTitle("Map View");
 		newFrame.setResizable(false);
@@ -105,29 +105,29 @@ public class MapWindow implements Observable {
 		newFrame.getContentPane().setLayout(new BorderLayout());
 	}
 
-	private void printMarkers(MarkerSelector markerSelector) {
-		_selectorType = markerSelector;
+	private void pintarMarcas(TipoMarca tipoMarca) {
+		_tipoMarca = tipoMarca;
 		_mapa.removeAllMapMarkers();
-		_markers.clear();
+		_marcas.clear();
 		for (Location location : _vertices.values()) {
-			MapMarkerDot marker = markerSelector.createMarker(location);
-			_markers.put(location.id(), location.markWithName());
-			marker.getStyle().setBackColor(Color.red);
-			marker.getStyle().setColor(Color.red);
-			_mapa.addMapMarker(marker);
+			MapMarkerDot marca = tipoMarca.crearMarca(location);
+			_marcas.put(location.id(), location.marcaConNombre());
+			marca.getStyle().setBackColor(Color.red);
+			marca.getStyle().setColor(Color.red);
+			_mapa.addMapMarker(marca);
 		}
 	}
 
-	private void printConnections() {
+	private void pintarConexiones() {
 
 		_mapa.removeAllMapPolygons();
 
 		for (int key : _vertices.keySet()) {
 			Location vertice = _vertices.get(key);
 			if (vertice != null) {
-				Coordinate start = vertice.getCoordinate();
+				Coordinate start = vertice.getCoordenada();
 				for (int vecino : vertice.vecinos()) {
-					Coordinate end = _vertices.get(vecino).getCoordinate();
+					Coordinate end = _vertices.get(vecino).getCoordenada();
 					MapPolygon line = new MapPolygonImpl(Arrays.asList(start, end, start));
 					_mapa.addMapPolygon(line);
 				}
@@ -135,7 +135,7 @@ public class MapWindow implements Observable {
 		}
 	}
 
-	private void positionWindowHalfScreen(JFrame frame) {
+	private void posicionarVentana(JFrame frame) {
 		// Obtener las dimensiones de la pantalla
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = screenSize.width;
@@ -149,7 +149,7 @@ public class MapWindow implements Observable {
 		frame.setLocation(x, y);
 	}
 
-	private void initializeMap() {
+	private void iniciarMapa() {
 		_mapa = new JMapViewer();
 		_mapa.setZoomControlsVisible(false);
 		Coordinate coordinate = new Coordinate(-40, -66);
@@ -159,12 +159,12 @@ public class MapWindow implements Observable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				checkMarkerHit(e, _markers, _mapa);
+				comprobarClickEnMarca(e, _marcas, _mapa);
 			}
 		});
 	}
 
-	private void loadVertices(List<Location> vertices) {
+	private void cargarVertices(List<Location> vertices) {
 		_vertices.clear();
 		for (Location vertice : vertices) {
 			int id = vertice.id();
@@ -174,34 +174,34 @@ public class MapWindow implements Observable {
 		}
 	}
 
-	public boolean isVisible() {
+	public boolean esVisible() {
 		return newFrame.isVisible();
 	}
 
-	public void close() {
+	public void cerrar() {
 		newFrame.dispose();
 	}
 
-	public void setMarkersDot(List<Location> vertices) {
-		loadVertices(vertices);
-		printConnections();
-		printMarkers(_selectorType);
+	public void serMarcas(List<Location> vertices) {
+		cargarVertices(vertices);
+		pintarConexiones();
+		pintarMarcas(_tipoMarca);
 	}
 
-	private void checkMarkerHit(MouseEvent e, Map<Integer, MapMarker> markers, JMapViewer viewer) {
+	private void comprobarClickEnMarca(MouseEvent e, Map<Integer, MapMarker> markers, JMapViewer viewer) {
 		int x = e.getX();
 		int y = e.getY();
 
-		for (Map.Entry<Integer, MapMarker> markerValue : markers.entrySet()) {
-			MapMarker marker = markerValue.getValue();
+		for (Map.Entry<Integer, MapMarker> marca : markers.entrySet()) {
+			MapMarker marker = marca.getValue();
 			Point p = viewer.getMapPosition(marker.getLat(), marker.getLon(), false);
 			if (p != null) {
 				// Calcular la distancia del clic al centro del marcador
 				double dist = Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
 				// Radio de la marca
 				if (dist < 6.0) {
-					Object markDTO = new MarkDTO(marker.getName(), markerValue.getKey());
-					notify("DotClicked", markDTO);
+					Object markDTO = new MarcaDTO(marker.getName(), marca.getKey());
+					notificar("DotClicked", markDTO);
 					break;
 				}
 			}
@@ -209,7 +209,7 @@ public class MapWindow implements Observable {
 	}
 
 	@Override
-	public void addObserver(String event, Observer observer) {
+	public void agregarObserver(String event, Observer observer) {
 		if (!_observers.containsKey(event)) {
 			throw new RuntimeException("Evento no existe:" + event);
 		}
@@ -218,14 +218,14 @@ public class MapWindow implements Observable {
 	}
 
 	@Override
-	public void notify(String event, Object dto) {
-		if (!_observers.containsKey(event)) {
-			throw new RuntimeException("Evento no existe:" + event);
+	public void notificar(String evento, Object dto) {
+		if (!_observers.containsKey(evento)) {
+			throw new RuntimeException("Evento no existe:" + evento);
 		}
 
-		Set<Observer> observers = _observers.get(event);
+		Set<Observer> observers = _observers.get(evento);
 		for (Observer observer : observers) {
-			observer.update(dto);
+			observer.actualizar(dto);
 		}
 	}
 

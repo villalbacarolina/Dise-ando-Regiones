@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import utils.InputUtils;
+import utils.FuncionesUtils;
 
 public class EliminarVerticeDialog extends Dialog {
 
@@ -16,9 +16,9 @@ public class EliminarVerticeDialog extends Dialog {
 
 	public EliminarVerticeDialog() {
 		super();
-		createLabels();
-		createInputs();
-		initEvents();
+		crearLabels();
+		crearInputs();
+		iniciarEventos();
 		eliminarButton();
 	}
 
@@ -29,8 +29,8 @@ public class EliminarVerticeDialog extends Dialog {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Integer origen = InputUtils.tryParseInt("Vértice", _verticeInput.getText());
-					EliminarVerticeDialog.this.notify("Eliminar", origen);
+					Integer origen = FuncionesUtils.intentarParsearInteger("Vértice", _verticeInput.getText());
+					EliminarVerticeDialog.this.notificar("Eliminar", origen);
 					_frame.dispose();
 				} catch (Exception error) {
 					System.out.println(error.getMessage());
@@ -39,21 +39,21 @@ public class EliminarVerticeDialog extends Dialog {
 		});
 	}
 
-	private void createInputs() {
+	private void crearInputs() {
 		_verticeInput = new JTextField();
 		_verticeInput.setBounds(130, 38, 114, 21);
 		_panel.add(_verticeInput);
 		_verticeInput.setColumns(10);
 	}
 
-	private void createLabels() {
+	private void crearLabels() {
 		JLabel origen = new JLabel("Vertice");
 		origen.setBounds(71, 40, 49, 17);
 		_panel.add(origen);
 	}
 
 	@Override
-	void initEvents() {
+	void iniciarEventos() {
 		_observers.put("Eliminar", new HashSet<>());
 	}
 
