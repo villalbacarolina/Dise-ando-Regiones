@@ -1,7 +1,7 @@
 package presentation;
 
 import app.DisenandoRegiones;
-import utils.InputUtils;
+import utils.FuncionesUtils;
 import utils.Observable;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -17,14 +17,14 @@ public class AgregarVerticeDialog extends Dialog implements Observable {
 	private JTextField longitudInput;
 
 	public AgregarVerticeDialog(DisenandoRegiones app) {
-		initEvents();
-		createLabels();
-		createInputs();
+		iniciarEventos();
+		crearLabels();
+		crearInputs();
 		createButton(app);
 	}
 
 	@Override
-	void initEvents() {
+	void iniciarEventos() {
 		_observers.put("Create", new HashSet<>());
 	}
 
@@ -37,11 +37,11 @@ public class AgregarVerticeDialog extends Dialog implements Observable {
 				try {
 
 					String origenName = nombreInput.getText();
-					Double origenLat = InputUtils.tryParseDouble("Latitud", latitudInput.getText());
-					Double origenLon = InputUtils.tryParseDouble("Longitud", longitudInput.getText());
+					Double origenLat = FuncionesUtils.intentarParsearDouble("Latitud", latitudInput.getText());
+					Double origenLon = FuncionesUtils.intentarParsearDouble("Longitud", longitudInput.getText());
 					int id = app.agregarVertice();
 					Object location = new Location(id, origenName, origenLat, origenLon);
-					AgregarVerticeDialog.this.notify("Create", location);
+					AgregarVerticeDialog.this.notificar("Create", location);
 					_frame.dispose();
 				} catch (Exception error) {
 					System.out.println(error.getMessage());
@@ -50,7 +50,7 @@ public class AgregarVerticeDialog extends Dialog implements Observable {
 		});
 	}
 
-	private void createInputs() {
+	private void crearInputs() {
 		longitudInput = new JTextField();
 		longitudInput.setBounds(130, 96, 114, 21);
 		_panel.add(longitudInput);
@@ -67,7 +67,7 @@ public class AgregarVerticeDialog extends Dialog implements Observable {
 		nombreInput.setColumns(10);
 	}
 
-	private void createLabels() {
+	private void crearLabels() {
 		JLabel lblLongitud = new JLabel("Longitud");
 		lblLongitud.setBounds(71, 98, 55, 17);
 		_panel.add(lblLongitud);

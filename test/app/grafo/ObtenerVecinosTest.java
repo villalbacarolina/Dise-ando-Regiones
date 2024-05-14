@@ -20,10 +20,10 @@ public class ObtenerVecinosTest {
 		int peso = 200;
 		Grafo g = new Grafo(cantVertices);
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
-	
-		g.obtenerVecinos(verticeNoExiste);		
+
+		g.obtenerVecinos(verticeNoExiste);
 	}
-	
+
 	@Test
 	public void obtenerVecinos() {
 		int cantVertices = 2;
@@ -33,11 +33,11 @@ public class ObtenerVecinosTest {
 		Grafo g = new Grafo(cantVertices);
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
 		List<Integer> vecinosEsperados = new ArrayList<>();
-		vecinosEsperados.add(1);		
-		
+		vecinosEsperados.add(1);
+
 		List<Integer> vecinosObtenidos = g.obtenerVecinos(verticeOrigen);
-		
+
 		assertEquals(vecinosObtenidos, vecinosEsperados);
 	}
-	
+
 }

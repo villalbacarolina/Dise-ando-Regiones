@@ -1,13 +1,9 @@
 package app.grafo;
 
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
-import app.Arista;
 import app.Grafo;
 
 public class AgregarAristaTest {
@@ -55,9 +51,9 @@ public class AgregarAristaTest {
 		vecinosEsperados.add(4);
 
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
-		
+
 		List<Integer> vecinosObtenidos = g.obtenerVecinos(verticeOrigen);
-		
+
 		assertEquals("Los vecinos no coinciden", vecinosObtenidos, vecinosEsperados);
 	}
 

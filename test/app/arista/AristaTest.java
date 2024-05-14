@@ -53,8 +53,7 @@ public class AristaTest {
 
 		assertEquals(a.getPeso(), nuevoPeso);
 	}
-	
-	
+
 	@Test
 	public void obtenerClaveOrigenDestino() {
 		int origen = 1;
@@ -66,7 +65,7 @@ public class AristaTest {
 
 		assertEquals(a.getClaveOrigenDestino(), clave);
 	}
-	
+
 	@Test
 	public void obtenerClaveDestinoOrigen() {
 		int origen = 1;
@@ -78,7 +77,5 @@ public class AristaTest {
 
 		assertEquals(a.getClaveDestinoOrigen(), clave);
 	}
-	
 
-	
 }

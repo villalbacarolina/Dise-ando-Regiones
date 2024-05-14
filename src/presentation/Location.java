@@ -8,16 +8,16 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 public class Location {
 
 	private final int _id;
-	private final String _name;
-	private final double _latitude;
-	private final double _longitude;
+	private final String _nombre;
+	private final double _latitud;
+	private final double _longitud;
 	private List<Integer> _vecinos;
 
-	Location(int id, String name, double latitude, double longitude) {
+	Location(int id, String nombre, double latitud, double longitud) {
 		_id = id;
-		_name = name;
-		_latitude = latitude;
-		_longitude = longitude;
+		_nombre = nombre;
+		_latitud = latitud;
+		_longitud = longitud;
 		_vecinos = new ArrayList<>();
 	}
 
@@ -25,35 +25,35 @@ public class Location {
 		return _id;
 	}
 
-	public String placeName() {
-		return _name;
+	public String nombreDelLugar() {
+		return _nombre;
 	}
 
 	public List<Integer> vecinos() {
 		return _vecinos;
 	}
 
-	public Coordinate getCoordinate() {
-		return new Coordinate(_latitude, _longitude);
+	public Coordinate getCoordenada() {
+		return new Coordinate(_latitud, _longitud);
 	}
 
 	public void setVecinos(List<Integer> vecinos) {
 		_vecinos = vecinos;
 	}
 
-	public MapMarkerDot markWithName() {
-		Coordinate coordinate = new Coordinate(_latitude, _longitude);
-		return new MapMarkerDot(_name, coordinate);
+	public MapMarkerDot marcaConNombre() {
+		Coordinate coordenada = new Coordinate(_latitud, _longitud);
+		return new MapMarkerDot(_nombre, coordenada);
 	}
 
-	public MapMarkerDot mark() {
-		Coordinate coordinate = new Coordinate(_latitude, _longitude);
-		return new MapMarkerDot(coordinate);
+	public MapMarkerDot marca() {
+		Coordinate coordenada = new Coordinate(_latitud, _longitud);
+		return new MapMarkerDot(coordenada);
 	}
 
-	public MapMarkerDot markWithId() {
-		Coordinate coordinate = new Coordinate(_latitude, _longitude);
-		return new MapMarkerDot(String.valueOf(_id), coordinate);
+	public MapMarkerDot marcaConID() {
+		Coordinate coordenada = new Coordinate(_latitud, _longitud);
+		return new MapMarkerDot(String.valueOf(_id), coordenada);
 	}
 
 }

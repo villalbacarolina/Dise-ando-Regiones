@@ -50,15 +50,4 @@ public class DisenandoRegionesTest {
 		return app;
 	}
 
-	private Grafo grafo1Region() {
-		Grafo g = new Grafo(4);
-
-		g.agregarArista(0, 1, 10);
-		g.agregarArista(1, 2, 10);
-		g.agregarArista(2, 3, 10);
-
-		return g;
-
-	}
-
 }

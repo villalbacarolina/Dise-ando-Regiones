@@ -1,7 +1,7 @@
 package utils;
 
 public interface Observable {
-	void addObserver(String event, Observer observer);
+	void agregarObserver(String evento, Observer observer);
 
-	void notify(String event, Object dto);
+	void notificar(String evento, Object dto);
 }

@@ -26,16 +26,15 @@ public class EliminarArista {
 		g.agregarArista(vertice2Origen, vertice2Destino, peso2);
 		List<Integer> vecinosEsperados = new ArrayList<>();
 		vecinosEsperados.add(0);
-		
-		
-	g.eliminarArista(vertice2Origen, vertice2Destino);
-		
+
+		g.eliminarArista(vertice2Origen, vertice2Destino);
+
 		List<Integer> vecinosObtenidos = g.obtenerVecinos(vertice2Origen);
-		
+
 		assertEquals(vecinosObtenidos, vecinosEsperados);
-		
+
 	}
-	
+
 	@Test
 	public void EliminaDeAristas() {
 		int cantVertices = 3;
@@ -46,13 +45,13 @@ public class EliminarArista {
 		g.agregarArista(verticeOrigen, verticeDestino, peso);
 
 		List<Arista> aristasEsperadas = new ArrayList<>();
-		
+
 		g.eliminarArista(verticeOrigen, verticeDestino);
-		
+
 		List<Arista> aristasObtenidas = g.obtenerAristas();
-		
+
 		assertEquals(aristasObtenidas, aristasEsperadas);
-		
+
 	}
 
 }

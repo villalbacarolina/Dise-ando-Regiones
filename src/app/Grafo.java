@@ -6,8 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import utils.NumberSearch;
+import utils.FuncionesUtils;
 
 public class Grafo {
 
@@ -112,7 +111,7 @@ public class Grafo {
 		Set<Arista> aristas = new HashSet<>();
 		for (Map.Entry<String, Arista> entry : _aristas.entrySet()) {
 			String clave = entry.getKey();
-			if (!NumberSearch.containsIsolatedNumber(clave, origen)) {
+			if (!FuncionesUtils.stringContieneNumero(clave, origen)) {
 				continue;
 			}
 			aristas.add(entry.getValue());

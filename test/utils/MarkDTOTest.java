@@ -9,14 +9,14 @@ public class MarkDTOTest {
 	@Test
 	public void obtenerNombre() {
 		String nombreEsperado = "Bs As";
-		MarkDTO mark = new MarkDTO(nombreEsperado, 1);
-		assertEquals(nombreEsperado, mark.name());
+		MarcaDTO mark = new MarcaDTO(nombreEsperado, 1);
+		assertEquals(nombreEsperado, mark.nombre());
 	}
 	
 	@Test
 	public void obtenerID() {
 		int idEsperado = 1;
-		MarkDTO mark = new MarkDTO("Bs As", idEsperado);
+		MarcaDTO mark = new MarcaDTO("Bs As", idEsperado);
 		assertEquals(idEsperado, mark.id());
 	}
 
