@@ -387,7 +387,7 @@ public class Main extends JFrame {
 			location.setVecinos(_app.obtenerVecinos(location.id()));
 		}
 
-		_mapWindow.serMarcas(vertices);
+		_mapWindow.setMarcas(vertices);
 	}
 
 	private void marcaClickeada(Object o) {

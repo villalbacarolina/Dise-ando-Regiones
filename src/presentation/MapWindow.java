@@ -182,7 +182,7 @@ public class MapWindow implements Observable {
 		newFrame.dispose();
 	}
 
-	public void serMarcas(List<Location> vertices) {
+	public void setMarcas(List<Location> vertices) {
 		cargarVertices(vertices);
 		pintarConexiones();
 		pintarMarcas(_tipoMarca);
